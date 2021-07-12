@@ -1,0 +1,16 @@
+compiler/*
+!compiler/include
+*.exe
+*.amx
+*.asm
+*.lst
+*.so
+*.dll
+crashinfo.txt
+server_log.txt
+/logs
+*.cadb
+/source/debug.pwn
+/compiler/include/zcmd.inc
+fcnpc-crash*
+/scriptfiles/FCNPC

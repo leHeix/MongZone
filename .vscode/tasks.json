@@ -1,0 +1,58 @@
+{
+	"version": "2.0.0",
+	"type": "shell",
+	"command": "${workspaceRoot}/compiler/pawncc.exe",
+	"problemMatcher": "$pawncc",
+	"presentation": {
+		"reveal": "always",
+		"focus": true,
+		"panel": "dedicated",
+		"clear": true
+	},
+	"tasks": [
+		{
+			"label": "Compilar servidor",
+			"args": [
+				"\"source/Main.pwn\"",
+				"\"-icompiler/include\"",
+				"\"-icompiler/include/YSI\"",
+				"\"-isource\"",
+				"\"-ogamemodes/server.amx\"",
+				// "\"-a\""
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Preprocesar",
+			"args": [
+				"\"source/Main.pwn\"",
+				"\"-icompiler/include\"",
+				"\"-icompiler/include/amx\"",
+				"\"-icompiler/include/YSI\"",
+				"\"-isource\"",
+				"\"-ogamemodes/server.lst\"",
+				"\"-l\""
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Compilar archivo",
+			"args": [
+				"\"${relativeFile}\"",
+				"\"-icompiler/include\"",
+				"\"-isource\"",
+				"\"-o${fileDirname}\\${fileBasenameNoExtension}.amx\"",
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
