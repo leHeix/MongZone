@@ -82,6 +82,7 @@ L1:
 #include "core/patches/sendclientcheck.pwn"
 #include "core/patches/textdraws.pwn"
 
+#include <YSI_Coding\y_hooks>
 #include <YSI_Coding\y_inline>
 #include <YSI_Core\y_utils>
 #include <YSI_Data\y_iterate>
@@ -89,6 +90,8 @@ L1:
 #include <YSI_Extra\y_inline_mysql>
 #include <YSI_Extra\y_inline_bcrypt>
 #include <YSI_Visual\y_dialog>
+
+DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 
 // Global definitions
 ////////////////////////
@@ -98,23 +101,37 @@ L1:
 /////////////
 #include "core/utils/header.pwn"
 #include "core/database/header.pwn"
+#include "core/transitions/header.pwn"
+#include "core/async/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "server/config/header.pwn"
+#include "player/account/header.pwn"
+#include "player/introduction/header.pwn"
 
 // Functions
 ///////////////
 #include "core/utils/functions.pwn"
+#include "core/transitions/functions.pwn"
+#include "core/async/functions.pwn"
 #include "server/config/functions.pwn"
+#include "player/account/functions.pwn"
+#include "player/introduction/functions.pwn"
 
 // Callbacks
 ///////////////
 #include "core/utils/callbacks.pwn"
 #include "core/database/callbacks.pwn"
+#include "core/transitions/callbacks.pwn"
+#include "core/async/callbacks.pwn"
 #include "server/config/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
+#include "player/introduction/callbacks.pwn"
+#include "player/account/callbacks.pwn"
 
 public OnGameModeInit()
 {
+	pp_use_funcidx(true);
+
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");

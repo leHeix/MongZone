@@ -5,12 +5,12 @@
 
 #include <YSI_Coding\y_hooks>
 
-hook OnGameModeInit()
+hook OnScriptInit()
 {
 	g_sqlDatabase = mysql_connect_file("MongZoneSQL.ini");
 	if(mysql_errno(g_sqlDatabase) != 0)
 	{
-		new err[64];
+		new err[128];
 		mysql_error(err);
 		print(!"[!] No se pudo conectar a la base de datos principal.");
 		print(!"[!] Detalles del incidente:");

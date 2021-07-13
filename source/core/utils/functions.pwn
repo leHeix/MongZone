@@ -24,65 +24,6 @@ TextDraw_DelayedSelect(playerid, hovercolor)
 	return 1;
 }
 
-stock String:Str_FixEncoding_s(String:base)
-{
-	for (new i = (str_len(base) - 1); i != -1; --i)
-	{
-		switch (str_getc(base, i))
-		{
-			case 'à': str_setc(base, i, 151);
-			case 'á': str_setc(base, i, 152);
-			case 'â': str_setc(base, i, 153);
-			case 'ä': str_setc(base, i, 154);
-			case 'À': str_setc(base, i, 128);
-			case 'Á': str_setc(base, i, 129);
-			case 'Â': str_setc(base, i, 130);
-			case 'Ä': str_setc(base, i, 131);
-			case 'è': str_setc(base, i, 157);
-			case 'é': str_setc(base, i, 158);
-			case 'ê': str_setc(base, i, 159);
-			case 'ë': str_setc(base, i, 160);
-			case 'È': str_setc(base, i, 134);
-			case 'É': str_setc(base, i, 135);
-			case 'Ê': str_setc(base, i, 136);
-			case 'Ë': str_setc(base, i, 137);
-			case 'ì': str_setc(base, i, 161);
-			case 'í': str_setc(base, i, 162);
-			case 'î': str_setc(base, i, 163);
-			case 'ï': str_setc(base, i, 164);
-			case 'Ì': str_setc(base, i, 138);
-			case 'Í': str_setc(base, i, 139);
-			case 'Î': str_setc(base, i, 140);
-			case 'Ï': str_setc(base, i, 141);
-			case 'ò': str_setc(base, i, 165);
-			case 'ó': str_setc(base, i, 166);
-			case 'ô': str_setc(base, i, 167);
-			case 'ö': str_setc(base, i, 168);
-			case 'Ò': str_setc(base, i, 142);
-			case 'Ó': str_setc(base, i, 143);
-			case 'Ô': str_setc(base, i, 144);
-			case 'Ö': str_setc(base, i, 145);
-			case 'ù': str_setc(base, i, 169);
-			case 'ú': str_setc(base, i, 170);
-			case 'û': str_setc(base, i, 171);
-			case 'ü': str_setc(base, i, 172);
-			case 'Ù': str_setc(base, i, 146);
-			case 'Ú': str_setc(base, i, 147);
-			case 'Û': str_setc(base, i, 148);
-			case 'Ü': str_setc(base, i, 149);
-			case 'ñ': str_setc(base, i, 174);
-			case 'Ñ': str_setc(base, i, 173);
-			case '¡': str_setc(base, i, 64);
-			case '¿': str_setc(base, i, 175);
-			case '`': str_setc(base, i, 177);
-			case '&': str_setc(base, i, 38);
-			case ']': str_setc(base, i, ')');
-			case '[': str_setc(base, i, '(');
-		}
-	}
-	return base;
-}
-
 Str_FixEncoding(const base[])
 {
 	new result[256];
@@ -242,4 +183,60 @@ stock any_acquire(AnyTag:value, tag = tagof(value))
 	/* too lazy - add more as the script grows */
 
 	return 1;
+}
+
+/*
+ * memset, but 2 microshits faster
+ * - heix
+ */
+FillMemory(arr[], val, length = sizeof(arr))
+{
+    new dst;
+
+    __emit {
+		// push fill length
+		load.s.pri length
+		const.alt cellbytes
+		smul				// length * cellbytes
+		push.pri
+
+		// push relocated FILL opcode
+		push.c OP_FILL
+        push.c 4
+		call RelocateOpcode
+		push.pri
+
+        // dst = COD + CIP - DAT + bytes to NOP
+		lctrl 0				// COD
+		move.alt
+		lctrl 6				// CIP
+		add
+		move.alt
+		lctrl 1				// DAT
+		sub.alt
+		add.c 0x64 			// 25 instructions since lctrl 6, multiplied by cell bytes
+		stor.s.pri dst
+
+		// WriteAMXMemory(dst, OP_FILL)
+		pop.pri
+		sref.s.pri dst
+
+		// dst += 4
+		load.s.pri dst
+		add.c 4
+		stor.s.pri dst
+
+		// WriteAMXMemory(dst, fill_len)
+		pop.pri                 // pop fill length
+		sref.s.pri dst
+
+		// FILL instruction uses the PRI and ALT registers for fill value and fill destination
+		load.s.pri val
+		load.s.alt arr
+
+		nop 					// FILL
+		nop						// fill_len
+	}
+
+	return 0;
 }

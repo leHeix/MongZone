@@ -1,3 +1,15 @@
+/*
+**
+** 	Prevents the "CancelSelectTextdDraw" native function from calling OnPlayerClickTextDraw
+**								with INVALID_TEXT_DRAW.
+**
+*/
+
+#if defined _PATCH_textdraws_
+	#endinput
+#endif
+#define _PATCH_textdraws_
+
 #include <YSI_Coding\y_hooks>
 
 static s_rgiCancelTick[MAX_PLAYERS];

@@ -1,3 +1,15 @@
+/*
+**
+** 	Sends a reliable, non-ordered, non-sequenced, crafted RPC for client checks
+** 				and fixes OnClientCheckResposne call problems.
+**
+*/
+
+#if defined _PATCH_sendclientcheck_
+	#endinput
+#endif
+#define _PATCH_sendclientcheck_
+
 #include <YSI_Coding\y_hooks>
 
 hook native SendClientCheck(playerid, type, memAddr, memOffset, byteCount)
