@@ -227,7 +227,7 @@ FillMemory(arr[], val, length = sizeof(arr))
 		stor.s.pri dst
 
 		// WriteAMXMemory(dst, fill_len)
-		pop.pri                 // pop fill length
+		pop.pri 				// pop fill length
 		sref.s.pri dst
 
 		// FILL instruction uses the PRI and ALT registers for fill value and fill destination
@@ -235,7 +235,7 @@ FillMemory(arr[], val, length = sizeof(arr))
 		load.s.alt arr
 
 		nop 					// FILL
-		nop						// fill_len
+		nop 					// fill_len
 	}
 
 	return 0;
