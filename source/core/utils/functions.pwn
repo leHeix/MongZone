@@ -191,9 +191,9 @@ stock any_acquire(AnyTag:value, tag = tagof(value))
  */
 FillMemory(arr[], val, length = sizeof(arr))
 {
-    new dst;
+	new dst;
 
-    __emit {
+	__emit {
 		// push fill length
 		load.s.pri length
 		const.alt cellbytes
@@ -202,11 +202,11 @@ FillMemory(arr[], val, length = sizeof(arr))
 
 		// push relocated FILL opcode
 		push.c OP_FILL
-        push.c 4
+		push.c 4
 		call RelocateOpcode
 		push.pri
 
-        // dst = COD + CIP - DAT + bytes to NOP
+		// dst = COD + CIP - DAT + bytes to NOP
 		lctrl 0				// COD
 		move.alt
 		lctrl 6				// CIP
