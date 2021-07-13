@@ -196,17 +196,11 @@ FillMemory(arr[], val, length = sizeof(arr))
 	__emit {
 		// push fill length
 		load.s.pri length
-		const.alt cellbytes
+		const.alt (cellbits / charbits)
 		smul				// length * cellbytes
 		push.pri
 
-		// push relocated FILL opcode
-		push.c OP_FILL
-		push.c 4
-		call RelocateOpcode
-		push.pri
-
-		// dst = COD + CIP - DAT + bytes to NOP
+		// dst = COD + CIP - DAT + bytes to fill param
 		lctrl 0				// COD
 		move.alt
 		lctrl 6				// CIP
@@ -214,28 +208,18 @@ FillMemory(arr[], val, length = sizeof(arr))
 		move.alt
 		lctrl 1				// DAT
 		sub.alt
-		add.c 0x64 			// 25 instructions since lctrl 6, multiplied by cell bytes
-		stor.s.pri dst
-
-		// WriteAMXMemory(dst, OP_FILL)
-		pop.pri
-		sref.s.pri dst
-
-		// dst += 4
-		load.s.pri dst
-		add.c 4
+		add.c 68 			// 25 instructions since lctrl 6, multiplied by cell bytes
 		stor.s.pri dst
 
 		// WriteAMXMemory(dst, fill_len)
-		pop.pri 				// pop fill length
+		pop.pri 			// pop fill length
 		sref.s.pri dst
 
 		// FILL instruction uses the PRI and ALT registers for fill value and fill destination
 		load.s.pri val
 		load.s.alt arr
 
-		nop 					// FILL
-		nop 					// fill_len
+		fill 1				// FILL
 	}
 
 	return 0;
