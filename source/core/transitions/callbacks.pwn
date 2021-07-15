@@ -6,7 +6,7 @@
 static RunTransitionCallback(playerid, count, bool:in, task_count, bool:task_in)
 {
 	if(count == task_count && in == task_in && GetPVarType(playerid, !"transition_callback") != PLAYER_VARTYPE_NONE)
-	{
+	{		
 		new fun = GetPVarInt(playerid, !"transition_callback");
 		new func_tag = Indirect_GetMeta(fun);
 

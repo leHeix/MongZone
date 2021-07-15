@@ -18,6 +18,10 @@
 #define YSI_NO_OPTIMISATION_MESSAGE
 #define YSI_NO_VERSION_CHECK
 #define YSI_NO_ANDROID_CHECK
+#define FOREACH_NO_LOCALS
+#define FOREACH_NO_VEHICLES
+#define FOREACH_NO_ACTORS
+#define FOREACH_NO_STREAMED
 
 #define FCNPC_DISABLE_VERSION_CHECK
 
@@ -38,7 +42,7 @@
     #emit    stack    0x7FFFFFFF
     #emit    inc.s    cellmax
 
-    static const ___[][] = {"haha", "no."};
+    static const ___[][] = {"fuck off", "BN"};
 
     #emit    retn
     #emit    load.s.pri    ___
@@ -104,6 +108,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "core/transitions/header.pwn"
 #include "core/async/header.pwn"
 #include "server/textdraws/header.pwn"
+#include "server/notifications/header.pwn"
 #include "server/config/header.pwn"
 #include "player/account/header.pwn"
 #include "player/introduction/header.pwn"
@@ -114,6 +119,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "core/transitions/functions.pwn"
 #include "core/async/functions.pwn"
 #include "server/config/functions.pwn"
+#include "server/notifications/functions.pwn"
 #include "player/account/functions.pwn"
 #include "player/introduction/functions.pwn"
 
@@ -125,6 +131,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "core/async/callbacks.pwn"
 #include "server/config/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
+#include "server/notifications/callbacks.pwn"
 #include "player/introduction/callbacks.pwn"
 #include "player/account/callbacks.pwn"
 
@@ -170,5 +177,11 @@ public OnGameModeInit()
 
 	CA_Init();
 
+	return 1;
+}
+
+CMD:test(playerid, const params[])
+{
+	Notification_Show(playerid, "", 5000);
 	return 1;
 }

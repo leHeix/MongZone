@@ -43,8 +43,10 @@ Transition_Stop(playerid)
 		return 0;
 
 	KillTimer(GetPVarInt(playerid, !"transition_timer"));
-	if(new fun = GetPVarInt(playerid, !"transition_callback"))
-		Indirect_Release(fun);
+	if(GetPVarType(playerid, !"transition_callback") != PLAYER_VARTYPE_NONE)
+	{
+		Indirect_Release(GetPVarInt(playerid, !"transition_callback"));
+	}
 
 	DeletePVar(playerid, !"transition_timer");
 	DeletePVar(playerid, !"transition_callback");

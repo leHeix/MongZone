@@ -8,6 +8,17 @@ enum {
 	PLAYER_SEX_FEMALE = 1
 };
 
+/* could make this bitwise but it's so useless */
+enum
+{
+	RANK_USER = 0,
+	RANK_ASSISTANT,
+	RANK_MODERATOR,
+	RANK_GAME_OPERATOR,
+	RANK_ADMIN,
+	RANK_SUPERADMIN
+};
+
 enum ePlayerData {
 	e_iAccountId,
 	e_szPlayerName[MAX_PLAYER_NAME],
@@ -15,6 +26,9 @@ enum ePlayerData {
 	e_szLastConnection[20],
 	e_iPlayerSex,
 	e_iPlayerAge,
+	e_iPlayerMoney,
+	Float:e_fPlayerHealth,
+	Float:e_fPlayerArmor,
 	e_iPlayerVirtualWorld,
 	e_iPlayerInterior,
 	e_iPlayerSkin,
@@ -26,6 +40,8 @@ enum ePlayerData {
 	Float:e_fPlayerSpawnAngle,
 	Float:e_fPlayerHunger,
 	Float:e_fPlayerThirst,
+
+	e_iRankLevel,
 };
 
 new g_rgePlayerData[MAX_PLAYERS + 1][ePlayerData];
@@ -42,7 +58,8 @@ enum {
 new BitArray:g_rgPlayerFlags[MAX_PLAYERS]<PF_MAX_FLAGS>;
 new 
 	p_szPassword[MAX_PLAYERS][32],
-	p_szPasswordHash[MAX_PLAYERS][61];
+	p_szPasswordHash[MAX_PLAYERS][61],
+	Iterator:Admins<MAX_PLAYERS>;
 
 #define Player_GetAccountId(%0) (g_rgePlayerData[(%0)][e_iAccountId])
 #define Player_SetAccountId(%0,%1) (g_rgePlayerData[(%0)][e_iAccountId] = (%1))
@@ -72,3 +89,6 @@ new
 #define Player_SetLevel(%0,%1) (g_rgePlayerData[(%0)][e_iPlayerLevel] = (%1))
 #define Player_GetXP(%0) (g_rgePlayerData[(%0)][e_iPlayerXP])
 #define Player_SetXP(%0,%1) (g_rgePlayerData[(%0)][e_iPlayerXP] = (%1))
+#define Player_GetMoney(%0) (g_rgePlayerData[(%0)][e_iPlayerMoney])
+#define Player_GetHealth(%0) (g_rgePlayerData[(%0)][e_fPlayerHealth])
+#define Player_GetArmor(%0) (g_rgePlayerData[(%0)][e_fPlayerArmor])

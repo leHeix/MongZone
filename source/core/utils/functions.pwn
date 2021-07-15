@@ -208,7 +208,7 @@ FillMemory(arr[], val, length = sizeof(arr))
 		move.alt
 		lctrl 1				// DAT
 		sub.alt
-		add.c 68 			// 25 instructions since lctrl 6, multiplied by cell bytes
+		add.c 0x44 			// 17 instructions since lctrl 6, multiplied by cell bytes
 		stor.s.pri dst
 
 		// WriteAMXMemory(dst, fill_len)

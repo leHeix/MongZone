@@ -29,12 +29,20 @@ hook OnScriptExit()
 	return 1;
 }
 
+hook OnPlayerDisconnect(playerid, reason)
+{
+	Intro_End(playerid);
+	return 1;
+}
+
 hook OnPlayerConnect(playerid)
 {
 	GetPlayerName(playerid, Player_GetName(playerid));
 	GetPlayerIp(playerid, Player_GetIp(playerid));
 
 	Bit_Set(Player_GetFlags(playerid), PFLAG_AUTHENTICATING, true);
+
+	EnablePlayerCameraTarget(playerid, true);
 
 	SetSpawnInfo(playerid, NO_TEAM, 0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0);
 	SpawnPlayer(playerid);
@@ -67,6 +75,8 @@ hook OnPlayerSpawn(playerid)
 
 				if(!exists)
 				{
+					Intro_SetUpVehicles(playerid);
+					
 					SetPlayerCameraPos(playerid, 1585.296142, -2566.993652, 13.769470);
 					SetPlayerCameraLookAt(playerid, 1580.729736, -2568.970458, 14.259890);
 
@@ -76,15 +86,28 @@ hook OnPlayerSpawn(playerid)
 				{
 					Bit_Set(Player_GetFlags(playerid), PFLAG_REGISTERED, true);
 
+					cache_get_value_name_int(0, !"ID", Player_GetAccountId(playerid));
 					cache_get_value_name(0, !"PASSWORD", p_szPasswordHash[playerid]);
 					cache_get_value_name_int(0, !"SEX", Player_GetSex(playerid));
 					cache_get_value_name_int(0, !"AGE", Player_GetAge(playerid));
+					cache_get_value_name_int(0, !"VIRTUALWORLD", Player_GetVirtualWorld(playerid));
+					cache_get_value_name_int(0, !"INTERIOR", Player_GetInterior(playerid));
+					cache_get_value_name_int(0, !"MONEY", Player_GetMoney(playerid));
+					cache_get_value_name_float(0, !"HEALTH", Player_GetHealth(playerid));
+					cache_get_value_name_float(0, !"ARMOR", Player_GetArmor(playerid));
+					cache_get_value_name_float(0, !"POS_X", g_rgePlayerData[playerid][e_fPlayerSpawnX]);
+					cache_get_value_name_float(0, !"POS_Y", g_rgePlayerData[playerid][e_fPlayerSpawnY]);
+					cache_get_value_name_float(0, !"POS_Z", g_rgePlayerData[playerid][e_fPlayerSpawnZ]);
+					cache_get_value_name_float(0, !"POS_ANGLE", g_rgePlayerData[playerid][e_fPlayerSpawnAngle]);
 					cache_get_value_name(0, !"LAST_CONNECTION", Player_GetLastConnection(playerid));
 					cache_get_value_name_int(0, !"LEVEL", Player_GetLevel(playerid));
 					cache_get_value_name_int(0, !"XP", Player_GetXP(playerid));
 					cache_get_value_name_int(0, !"SKIN", Player_GetSkin(playerid));
 					cache_get_value_name_float(0, !"HUNGER", Player_GetHunger(playerid));
 					cache_get_value_name_float(0, !"THIRST", Player_GetThirst(playerid));
+
+					mysql_tquery_s(g_sqlDatabase, @f("UPDATE `USERS` SET `CURRENT_CONNECTION` = UNIX_TIMESTAMP() WHERE `ID` = %i;", Player_GetAccountId(playerid)));
+					Account_InsertConnectionLog(playerid);
 
 					for (new i; i <= 13; i += 1)
 					{
@@ -154,9 +177,11 @@ hook OnPlayerPressEsc(playerid)
 
 			inline const OnRegister()
 			{
+				print("register done");
+
 				inline const OnIntroEnd()
 				{
-					print("intro end");
+					//SendClientMessagef(playerid, )
 				}
 				Intro_Play(playerid, using inline OnIntroEnd);
 			}
@@ -332,6 +357,7 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid)
 				if(!result)
 					return Dialog_Show(playerid, DIALOG_STYLE_MSGBOX, "{D2B567}Error", "{3E3D53}- {FFFFFF}La {D2B567}contraseña {FFFFFF}es incorrecta.", "Entendido", "");
 
+				Bit_Set(Player_GetFlags(playerid), PFLAG_AUTHENTICATING, false);
 				FillMemory(p_szPassword[playerid], '\0');
 
 				inline const ScreenBlacked()
@@ -341,14 +367,12 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid)
 					Intro_ToggleTextdraws(playerid, false);
 					TextDrawHideForPlayer(playerid, g_tdLastConnection);
 					
-					TogglePlayerSpectating(playerid, false);
-
 					new Float:x, Float:y, Float:z, Float:angle;
 					Player_GetSpawnPos(playerid, x, y, z, angle);
+
 					SetSpawnInfo(playerid, NO_TEAM, Player_GetSkin(playerid), x, y, z, angle, 0, 0, 0, 0, 0, 0);
-					SpawnPlayer(playerid);
-					SetPlayerPos(playerid, x, y, z);
-					SetPlayerFacingAngle(playerid, angle);
+					TogglePlayerSpectating(playerid, false);
+
 					SetPlayerVirtualWorld(playerid, Player_GetVirtualWorld(playerid));
 					SetPlayerInterior(playerid, Player_GetInterior(playerid));
 

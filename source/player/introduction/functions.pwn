@@ -9,24 +9,20 @@
 	use the safe alternative, timers, instead
 */
 
-forward __Intro_FirstWait(playerid, planeid);
-public __Intro_FirstWait(playerid, planeid)
+forward __Intro_FirstWait(playerid);
+public __Intro_FirstWait(playerid)
 {
-	print("1");
-
 	InterpolateCameraPos(playerid, 1585.296142, -2566.993652, 13.769470, 1631.829467, -2568.340820, 13.502227, 10000);
 	InterpolateCameraLookAt(playerid, 1580.729736, -2568.970458, 14.259890, 1636.329833, -2570.498779, 13.801852, 10000);
 
-	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_SecondWait", 10000, false, "dd", playerid, planeid));
+	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_SecondWait", 10000, false, "dd", playerid));
 
 	return 1;
 }
 
-forward __Intro_SecondWait(playerid, planeid);
-public __Intro_SecondWait(playerid, planeid)
+forward __Intro_SecondWait(playerid);
+public __Intro_SecondWait(playerid)
 {
-	print("2");
-
 	inline const ScreenBlacked()
 	{
 		Transition_Pause(playerid);
@@ -34,7 +30,7 @@ public __Intro_SecondWait(playerid, planeid)
 		// transition is paused, start pre-loading everything asap
 		FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPilot]);
 		FCNPC_Kill(g_rgeIntroData[playerid][e_iIntroPilot]);
-		DestroyVehicle(planeid);
+		DestroyVehicle(GetPVarInt(playerid, !"introduction_airplane"));
 
 		if(!FCNPC_IsSpawned(g_rgeIntroData[playerid][e_iIntroPlayer]))
 			FCNPC_Spawn(g_rgeIntroData[playerid][e_iIntroPlayer], 0, 0.0, 0.0, 0.0);
@@ -59,7 +55,12 @@ public __Intro_SecondWait(playerid, planeid)
 			InterpolateCameraPos(playerid, 1704.426269, -2209.828369, 1041.235351, 1699.402343, -2225.497314, 1039.668945, 12500);
 			InterpolateCameraLookAt(playerid, 1699.817260, -2210.559570, 1039.440429, 1694.927978, -2227.583251, 1038.875488, 12500);
 
-			SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_ThirdWait", 12500, false, "d", playerid));
+			inline const OnEnd()
+			{
+				print("onend called");
+				__Intro_ThirdWait(playerid);
+			}
+			FCNPC_OnPlaybackEndInline(g_rgeIntroData[playerid][e_iIntroPlayer], using inline OnEnd);
 		}
 		Transition_StartInline(using inline ScreenDim, playerid, 185, TRANSITION_OUT);
 	}
@@ -72,10 +73,8 @@ public __Intro_SecondWait(playerid, planeid)
 forward __Intro_ThirdWait(playerid);
 public __Intro_ThirdWait(playerid)
 {
-	print("3");
-
-	new object = CreatePlayerObject(playerid, 19624, 1690.1805, -2227.0757, 1039.0792, 87.7799, -0.6600, 0.0000, 200.0);
-	MovePlayerObject(playerid, object, 1696.1682,-2227.0432, 1039.0792, 0.7, 87.7799, -0.6600, 0.0000);
+	new object = CreateObject(19624, 1690.1805, -2227.0757, 1039.0792, 87.7799, -0.6600, 0.0000, 200.0);
+	MoveObject(object, 1696.1682,-2227.0432, 1039.0792, 0.7, 87.7799, -0.6600, 0.0000);
 
 	SetPVarInt(playerid, !"introduction_case", object);
 
@@ -90,8 +89,6 @@ public __Intro_ThirdWait(playerid)
 forward __Intro_FourthWait(playerid);
 public __Intro_FourthWait(playerid)
 {
-	print("4");
-
 	FCNPC_SetAnimationByName(g_rgeIntroData[playerid][e_iIntroPlayer], "MISC:CASE_PICKUP", 2.0);
 
 	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_FifthWait", 1000, false, "d", playerid));
@@ -105,7 +102,7 @@ public __Intro_FifthWait(playerid)
 	FCNPC_ResetAnimation(g_rgeIntroData[playerid][e_iIntroPlayer]);
 	FCNPC_ClearAnimations(g_rgeIntroData[playerid][e_iIntroPlayer]);
 
-	AttachPlayerObjectToPlayer(playerid, GetPVarInt(playerid, !"introduction_case"), playerid, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	AttachObjectToPlayer(GetPVarInt(playerid, !"introduction_case"), playerid, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
 	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_SixthWait", 1000, false, "d", playerid));
 	return 1;
@@ -149,30 +146,27 @@ public __Intro_EighthWait(playerid)
 	FCNPC_Spawn(g_rgeIntroData[playerid][e_iTaxiDriver], 221, 0.0, 0.0, 0.0);
 	FCNPC_SetVirtualWorld(g_rgeIntroData[playerid][e_iTaxiDriver], VW_PLAYER + playerid);
 
-	new taxiid = CreateVehicle(420, 0.0, 0.0, 1000.0 + (playerid * 2), 0.0, 6, 6, -1, 0);
-	SetVehicleVirtualWorld(taxiid, VW_PLAYER + playerid);
-	FCNPC_PutInVehicle(g_rgeIntroData[playerid][e_iTaxiDriver], taxiid, 0);
-
+	FCNPC_PutInVehicle(g_rgeIntroData[playerid][e_iTaxiDriver], GetPVarInt(playerid, !"introduction_taxi"), 0);
 	FCNPC_StartPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver], "drive-in-taxi");
 
-	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_NinethWait", 7500, false, "dd", playerid, taxiid));
+	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_NinethWait", 7500, false, "d", playerid));
 
 	return 1;
 }
 
-forward __Intro_NinethWait(playerid, taxiid);
-public __Intro_NinethWait(playerid, taxiid)
+forward __Intro_NinethWait(playerid);
+public __Intro_NinethWait(playerid)
 {
 	FCNPC_ApplyAnimation(g_rgeIntroData[playerid][e_iIntroPlayer], "PED", "IDLE_TAXI", 2.0, false);
 	FCNPC_SetAnimationByName(g_rgeIntroData[playerid][e_iIntroPlayer], "PED:IDLE_TAXI", 2.0, false);
 
-	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_TenthWait", 1000, false, "dd", playerid, taxiid));
+	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_TenthWait", 1000, false, "d", playerid));
 
 	return 1;
 }
 
-forward __Intro_TenthWait(playerid, taxiid);
-public __Intro_TenthWait(playerid, taxiid)
+forward __Intro_TenthWait(playerid);
+public __Intro_TenthWait(playerid)
 {
 	FCNPC_ClearAnimations(g_rgeIntroData[playerid][e_iIntroPlayer]);
 
@@ -181,11 +175,11 @@ public __Intro_TenthWait(playerid, taxiid)
 		SetPlayerCameraPos(playerid, 1677.123779, -2324.788330, 13.009157);
 		SetPlayerCameraLookAt(playerid, 1681.670410, -2322.726562, 12.731955);
 
-		FCNPC_EnterVehicle(g_rgeIntroData[playerid][e_iIntroPlayer], taxiid, 1, FCNPC_MOVE_TYPE_WALK);
+		FCNPC_EnterVehicle(g_rgeIntroData[playerid][e_iIntroPlayer], GetPVarInt(playerid, !"introduction_taxi"), 1, FCNPC_MOVE_TYPE_WALK);
 
 		inline const VehicleEntry()
 		{
-			SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_EleventhWait", 500, false, "dd", playerid, taxiid));
+			SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_EleventhWait", 500, false, "d", playerid));
 		}
 		FCNPC_OnVehicleEntryInline(g_rgeIntroData[playerid][e_iIntroPlayer], using inline VehicleEntry);
 	}
@@ -194,32 +188,32 @@ public __Intro_TenthWait(playerid, taxiid)
 	return 1;
 }
 
-forward __Intro_EleventhWait(playerid, taxiid);
-public __Intro_EleventhWait(playerid, taxiid)
+forward __Intro_EleventhWait(playerid);
+public __Intro_EleventhWait(playerid)
 {
 	SetPlayerCameraPos(playerid, 1674.848144, -2319.061279, 14.110863);
 	SetPlayerCameraLookAt(playerid, 1679.837036, -2319.092773, 13.779075);
 
 	FCNPC_StartPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver], "drive-out-taxi");
 
-	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_TwelfthWait", 5000, false, "dd", playerid, taxiid));
+	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_TwelfthWait", 5000, false, "d", playerid));
 
 	return 1;
 }
 
-forward __Intro_TwelfthWait(playerid, taxiid);
-public __Intro_TwelfthWait(playerid, taxiid)
+forward __Intro_TwelfthWait(playerid);
+public __Intro_TwelfthWait(playerid)
 {
 	InterpolateCameraPos(playerid, 1674.848144, -2319.061279, 14.110863, 1671.073608, -2319.453369, 31.946434, 5000);
 	InterpolateCameraLookAt(playerid, 1679.837036, -2319.092773, 13.779075, 1675.593994, -2319.407714, 34.082782, 5000);
 
-	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_ThirteenthWait", 5000, false, "dd", playerid, taxiid));
+	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_ThirteenthWait", 5000, false, "d", playerid));
 
 	return 1;
 }
 
-forward __Intro_ThirteenthWait(playerid, taxiid);
-public __Intro_ThirteenthWait(playerid, taxiid)
+forward __Intro_ThirteenthWait(playerid);
+public __Intro_ThirteenthWait(playerid)
 {	
 	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver]);
 	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPlayer]);
@@ -227,15 +221,15 @@ public __Intro_ThirteenthWait(playerid, taxiid)
 	inline const ScreenBlacked()
 	{
 		Transition_Pause(playerid);
-		SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_FourteenthWait", 2500, false, "dd", playerid, taxiid));
+		SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_FourteenthWait", 2500, false, "d", playerid));
 	}
 	Transition_StartInline(using inline ScreenBlacked, playerid, 255, TRANSITION_IN);
 
 	return 1;
 }
 
-forward __Intro_FourteenthWait(playerid, taxiid);
-public __Intro_FourteenthWait(playerid, taxiid)
+forward __Intro_FourteenthWait(playerid);
+public __Intro_FourteenthWait(playerid)
 {
 	TogglePlayerSpectating(playerid, false);
 
@@ -245,6 +239,7 @@ public __Intro_FourteenthWait(playerid, taxiid)
 	new object = GetPVarInt(playerid, !"introduction_case");
 	if(IsValidObject(object))
 		DestroyObject(object);
+	DeletePVar(playerid, !"introduction_case");
 
 	TogglePlayerControllable(playerid, false);
 
@@ -262,7 +257,7 @@ public __Intro_FourteenthWait(playerid, taxiid)
 	{
 		FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver]);
 		FCNPC_Kill(g_rgeIntroData[playerid][e_iTaxiDriver]);
-		DestroyVehicle(taxiid);
+		DestroyVehicle(GetPVarInt(playerid, !"introduction_taxi"));
 		FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPlayer]);
 		FCNPC_Kill(g_rgeIntroData[playerid][e_iIntroPlayer]);
 
@@ -292,6 +287,8 @@ public __Intro_FifteenthWait(playerid)
 	TogglePlayerControllable(playerid, true);
 
 	DeletePVar(playerid, !"introduction_timer");
+	DeletePVar(playerid, !"introduction_taxi");
+	DeletePVar(playerid, !"introduction_airplane");
 
 	new fun = GetPVarInt(playerid, !"introduction_callback");
 	@.fun();
@@ -303,10 +300,23 @@ public __Intro_FifteenthWait(playerid)
 	return 1;
 }
 
+Intro_SetUpVehicles(playerid)
+{
+	new airplane = CreateVehicle(577, 0.0, 0.0, 1000.0 + (playerid * 2), 0.0, -1, -1, -1, 0);
+	SetVehicleVirtualWorld(airplane, (VW_PLAYER + playerid));
+	LinkVehicleToInterior(airplane, 0);
+	SetPVarInt(playerid, !"introduction_airplane", airplane);
+
+	new taxi = CreateVehicle(420, 0.0, 0.0, 1000.0 + (playerid * 2), 0.0, 6, 6, -1, 0);
+	SetVehicleVirtualWorld(taxi, (VW_PLAYER + playerid));
+	LinkVehicleToInterior(taxi, 0);
+	SetPVarInt(playerid, !"introduction_taxi", taxi);
+
+	return 0;
+}
+
 Intro_Play(playerid, Func:onend<>)
 {
-	print("intro playing");
-
 	Bit_Set(Player_GetFlags(playerid), PFLAG_INTRODUCTION_RUNNING, true);
 
 	Indirect_Claim(onend);
@@ -317,18 +327,46 @@ Intro_Play(playerid, Func:onend<>)
 
 	FCNPC_Spawn(g_rgeIntroData[playerid][e_iIntroPilot], 255, 0.0, 0.0, 1000.0 + (playerid * 2));
 	FCNPC_SetVirtualWorld(g_rgeIntroData[playerid][e_iIntroPilot], (VW_PLAYER + playerid));
-
-	new planeid = CreateVehicle(577, 0.0, 0.0, 1000.0 + (playerid * 2), 0.0, -1, -1, -1, 0);
-	SetVehicleVirtualWorld(planeid, (VW_PLAYER + playerid));
-
-	FCNPC_PutInVehicle(g_rgeIntroData[playerid][e_iIntroPilot], planeid, 0);
+	FCNPC_SetInterior(g_rgeIntroData[playerid][e_iIntroPilot], 0);
+	FCNPC_PutInVehicle(g_rgeIntroData[playerid][e_iIntroPilot], GetPVarInt(playerid, !"introduction_airplane"), 0);
 	FCNPC_StartPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPilot], "intro-airplane");
 
-	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_FirstWait", 5000, false, "dd", playerid, planeid));
+	SetPVarInt(playerid, !"introduction_timer", SetTimerEx("__Intro_FirstWait", 5000, false, "d", playerid));
 
 	return 1;
 }
 
+Intro_End(playerid)
+{
+	new veh;
+	if((veh = GetPVarInt(playerid, !"introduction_airplane")))
+		DestroyVehicle(veh);
+
+	if((veh = GetPVarInt(playerid, !"introduction_taxi")))
+		DestroyVehicle(veh);
+	
+	if(GetPVarType(playerid, !"introduction_timer") == PLAYER_VARTYPE_NONE)
+		return 0;
+
+	if(new fun = GetPVarInt(playerid, !"introduction_callback"))
+		Indirect_Release(fun);
+
+	DeletePVar(playerid, !"introduction_callback");
+	KillTimer(GetPVarInt(playerid, !"introduction_timer"));
+	DeletePVar(playerid, !"introduction_timer");
+	DeletePVar(playerid, !"introduction_case");
+	DeletePVar(playerid, !"introduction_airplane");
+	DeletePVar(playerid, !"introduction_taxi");
+
+	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPilot]);
+	FCNPC_Kill(g_rgeIntroData[playerid][e_iIntroPilot]);
+	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPlayer]);
+	FCNPC_Kill(g_rgeIntroData[playerid][e_iIntroPlayer]);
+	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver]);
+	FCNPC_Kill(g_rgeIntroData[playerid][e_iTaxiDriver]);
+
+	return 0;
+}
 
 Intro_ToggleTextdraws(playerid, bool:show)
 {

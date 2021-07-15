@@ -13,4 +13,5 @@ new
 	PlayerText:p_tdTransition[MAX_PLAYERS char],
 	PlayerText:p_tdRegisterAcc[MAX_PLAYERS char][5 char],
 	PlayerText:p_tdPlayerCustomization[MAX_PLAYERS char],
-	PlayerText:p_tdSkinSelector[MAX_PLAYERS char];
+	PlayerText:p_tdSkinSelector[MAX_PLAYERS char],
+	PlayerText:p_tdNotifications[MAX_PLAYERS][3][6 char];
