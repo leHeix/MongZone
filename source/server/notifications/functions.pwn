@@ -35,6 +35,8 @@ Notification_Show(playerid, const text[], time = 2000)
 
 	Iter_Add(g_rgNotifUsed[playerid], td_idx);
 
+	PlayerTextDrawSetString(playerid, p_tdNotification[playerid][td_idx]{4}, text);
+	
 	for(new i = 5; i != -1; i -= 1)
 	{
 		new Float:x, Float:y;
