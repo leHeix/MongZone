@@ -182,6 +182,6 @@ public OnGameModeInit()
 
 CMD:test(playerid, const params[])
 {
-	Notification_Show(playerid, "", 5000);
+	Notification_Show(playerid, "hola", 5000);
 	return 1;
 }
