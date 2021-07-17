@@ -3,15 +3,10 @@
 #pragma semicolon 1
 #pragma warning disable 239 // fuck off
 
-// syntactic sugar tweaks
-#define PP_SYNTAX_AWAIT
-#define PP_SYNTAX_YIELD
+// syntactic sugar tweakss
 #define PP_SYNTAX_STRING_OP
 #define PP_SYNAX_GENERIC
 #define PP_SYNTAX_@
-#define PP_SYNTAX_@f
-#define YSI_NO_KEYWORD_yield
-#define YSI_NO_KEYWORD_List
 // ysi must-haves
 #define YSI_NO_HEAP_MALLOC
 #define YSI_NO_MODE_CACHE
@@ -36,8 +31,8 @@
 
 // Daniel-Cortez's Anti-DeAMX
 ////////////////////////////////
-@___ww___@();
-@___ww___@()
+@__groyper_season__@();
+@__groyper_season__@()
 {
     #emit    stack    0x7FFFFFFF
     #emit    inc.s    cellmax
@@ -69,9 +64,9 @@ L1:
 #assert (MAX_PLAYERS * 4) < 1000
 
 #include <jit>
+#include <YSF>
 #include <streamer>
 #include <sscanf2>
-#include <YSF>
 #include <ColAndreas>
 #include <FCNPC>
 #include <PawnPlus>
@@ -82,8 +77,6 @@ L1:
 
 // Patches
 /////////////
-#include "core/patches/first_hooks.pwn"
-#include "core/patches/sendclientcheck.pwn"
 #include "core/patches/textdraws.pwn"
 
 #include <YSI_Coding\y_hooks>
@@ -91,54 +84,19 @@ L1:
 #include <YSI_Core\y_utils>
 #include <YSI_Data\y_iterate>
 #include <YSI_Data\y_bit>
-#include <YSI_Extra\y_inline_mysql>
-#include <YSI_Extra\y_inline_bcrypt>
+#include <YSI_Server\y_scriptinit>
 #include <YSI_Visual\y_dialog>
 
-DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
+#include <amx/codescan>
+#include <amx/opcode>
+#include <amx/amx_memory>
 
-// Global definitions
-////////////////////////
-#include "core/definitions.pwn"
-
-// Headers
-/////////////
-#include "core/utils/header.pwn"
-#include "core/database/header.pwn"
-#include "core/transitions/header.pwn"
-#include "core/async/header.pwn"
-#include "server/textdraws/header.pwn"
-#include "server/notifications/header.pwn"
-#include "server/config/header.pwn"
-#include "player/account/header.pwn"
-#include "player/introduction/header.pwn"
-
-// Functions
-///////////////
-#include "core/utils/functions.pwn"
-#include "core/transitions/functions.pwn"
-#include "core/async/functions.pwn"
-#include "server/config/functions.pwn"
-#include "server/notifications/functions.pwn"
-#include "player/account/functions.pwn"
-#include "player/introduction/functions.pwn"
-
-// Callbacks
-///////////////
-#include "core/utils/callbacks.pwn"
-#include "core/database/callbacks.pwn"
-#include "core/transitions/callbacks.pwn"
-#include "core/async/callbacks.pwn"
-#include "server/config/callbacks.pwn"
-#include "server/textdraws/callbacks.pwn"
-#include "server/notifications/callbacks.pwn"
-#include "player/introduction/callbacks.pwn"
-#include "player/account/callbacks.pwn"
+// Custom code generation
+////////////////////////////
+#include "cgen/fill.pwn"
 
 public OnGameModeInit()
-{
-	pp_use_funcidx(true);
-
+{	
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");
@@ -149,7 +107,7 @@ public OnGameModeInit()
 	print(!"=                                                               =");
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 
-	#if !DEBUG_MODE
+	#if !defined DEBUG_MODE
 		if(!__JIT)
 		{
 			print(!"[!] MongZone esta diseñado para funcionar con el compilador JIT.");
@@ -157,31 +115,5 @@ public OnGameModeInit()
 		}
 	#endif
 
-	/*
-	__emit {
-		zero.pri
-		lctrl 0xFF
-		jzer L0 // jump out of disable code
-		zero.pri
-		sctrl 0xFE
-		L0:
-		nop
-	}
-	*/
-
-	// the sctrl 0xFE instruction is a nop when crashdetect isn't loaded
-	__emit {
-		zero.pri
-		sctrl 0xFE
-	}
-
 	CA_Init();
-
-	return 1;
-}
-
-CMD:test(playerid, const params[])
-{
-	Notification_Show(playerid, "hola", 5000);
-	return 1;
 }

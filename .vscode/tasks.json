@@ -16,6 +16,7 @@
 				"\"source/Main.pwn\"",
 				"\"-icompiler/include\"",
 				"\"-icompiler/include/YSI\"",
+				"\"-icompiler/include/YSI/amx\"",
 				"\"-isource\"",
 				"\"-ogamemodes/server.amx\"",
 				// "\"-a\""
@@ -30,11 +31,27 @@
 			"args": [
 				"\"source/Main.pwn\"",
 				"\"-icompiler/include\"",
-				"\"-icompiler/include/amx\"",
 				"\"-icompiler/include/YSI\"",
+				"\"-icompiler/include/YSI/amx\"",
 				"\"-isource\"",
 				"\"-ogamemodes/server.lst\"",
 				"\"-l\""
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "Ensamblar",
+			"args": [
+				"\"source/Main.pwn\"",
+				"\"-icompiler/include\"",
+				"\"-icompiler/include/YSI\"",
+				"\"-icompiler/include/YSI/amx\"",
+				"\"-isource\"",
+				"\"-ogamemodes/server.asm\"",
+				"\"-a\""
 			],
 			"group": {
 				"kind": "build",
