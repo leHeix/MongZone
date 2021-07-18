@@ -85,6 +85,8 @@ L1:
 #include <YSI_Core\y_utils>
 #include <YSI_Data\y_iterate>
 #include <YSI_Data\y_bit>
+#include <YSI_Extra\y_inline_mysql>
+#include <YSI_Extra\y_inline_bcrypt>
 #include <YSI_Extra\y_inline_timers>
 #include <YSI_Server\y_scriptinit>
 #include <YSI_Visual\y_dialog>
@@ -99,6 +101,8 @@ L1:
 
 // Headers
 /////////////
+#include "core/utils/header.pwn"
+#include "core/database/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "player/account/header.pwn"
@@ -106,14 +110,18 @@ L1:
 // Functions
 ///////////////
 #include "core/transitions/functions.pwn"
+#include "player/account/functions.pwn"
 
 // Callbacks
 ///////////////
+#include "core/database/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
 
 public OnGameModeInit()
-{	
+{
+	Account_Register(0);
+
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");
