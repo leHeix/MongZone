@@ -78,12 +78,14 @@ L1:
 // Patches
 /////////////
 #include "core/patches/textdraws.pwn"
+#include "core/patches/first_hooks.pwn"
 
 #include <YSI_Coding\y_hooks>
 #include <YSI_Coding\y_inline>
 #include <YSI_Core\y_utils>
 #include <YSI_Data\y_iterate>
 #include <YSI_Data\y_bit>
+#include <YSI_Extra\y_inline_timers>
 #include <YSI_Server\y_scriptinit>
 #include <YSI_Visual\y_dialog>
 
@@ -94,6 +96,21 @@ L1:
 // Custom code generation
 ////////////////////////////
 #include "cgen/fill.pwn"
+
+// Headers
+/////////////
+#include "server/textdraws/header.pwn"
+#include "core/transitions/header.pwn"
+#include "player/account/header.pwn"
+
+// Functions
+///////////////
+#include "core/transitions/functions.pwn"
+
+// Callbacks
+///////////////
+#include "server/textdraws/callbacks.pwn"
+#include "core/transitions/callbacks.pwn"
 
 public OnGameModeInit()
 {	
