@@ -103,18 +103,21 @@ L1:
 /////////////
 #include "core/utils/header.pwn"
 #include "core/database/header.pwn"
+#include "core/config/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "player/account/header.pwn"
 
 // Functions
 ///////////////
+#include "core/config/functions.pwn"
 #include "core/transitions/functions.pwn"
 #include "player/account/functions.pwn"
 
 // Callbacks
 ///////////////
 #include "core/database/callbacks.pwn"
+#include "core/config/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
 #include "player/account/callbacks.pwn"
