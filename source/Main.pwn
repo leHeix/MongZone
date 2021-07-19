@@ -117,11 +117,10 @@ L1:
 #include "core/database/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
+#include "player/account/callbacks.pwn"
 
 public OnGameModeInit()
 {
-	Account_Register(0);
-
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");

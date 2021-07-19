@@ -1,5 +1,5 @@
 /*
-	Replaces FillMemory calls with fast inline "fill" calls.
+	Replaces FillMemory calls with inline "fill" instructions.
 	- heix
 */
 

@@ -25,6 +25,13 @@ enum ePlayerData {
 	e_iPlayerSex,
 	e_iPlayerAge,
 	e_iPlayerSkin,
+	e_iPlayerLevel,
+	e_iPlayerXP,
+	Float:e_fPlayerHunger,
+	Float:e_fPlayerThirst,
+
+	e_iRankLevel,
+	e_iPlayedTime
 };
 
 enum {
@@ -65,3 +72,12 @@ new
 #define Player_Sex(%0) (g_rgePlayerData[(%0)][e_iPlayerSex])
 #define Player_Age(%0) (g_rgePlayerData[(%0)][e_iPlayerAge])
 #define Player_Skin(%0) (g_rgePlayerData[(%0)][e_iPlayerSkin])
+#define Player_Level(%0) (g_rgePlayerData[(%0)][e_iPlayerLevel])
+#define Player_XP(%0) (g_rgePlayerData[(%0)][e_iPlayerXP])
+#define Player_Hunger(%0) (g_rgePlayerData[(%0)][e_fPlayerHunger])
+#define Player_Thirst(%0) (g_rgePlayerData[(%0)][e_fPlayerThirst])
+#define Player_Rank(%0) (g_rgePlayerData[(%0)][e_iRankLevel])
+#define Player_PlayedTime(%0) (g_rgePlayerData[(%0)][e_iPlayedTime])
+
+forward OnPlayerDataFetched(playerid);
+forward OnPlayerDataLoaded(playerid);
