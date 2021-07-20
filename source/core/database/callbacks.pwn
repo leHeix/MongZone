@@ -14,7 +14,7 @@ hook OnScriptInit()
 		print("[!] No se pudo conectar a la base de datos.");
 		print("[!] Información sobre la excepción:");
 		printf("[!]     %s", YSI_UNSAFE_HUGE_STRING);
-		SendRconCommand(!"exit");
+		SendRconCommand("exit");
 
 		return ~1;
 	}

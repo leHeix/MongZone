@@ -21,13 +21,17 @@ stock tdpatch_CancelSelectTextDraw(playerid)
 #define CancelSelectTextDraw tdpatch_CancelSelectTextDraw
 
 hook OnPlayerClickTextDraw(playerid, Text:clickedid)
-{
-	if(clickedid == Text:INVALID_TEXT_DRAW && s_rgiCancelTick[playerid] != 0)
+{	
+	if(clickedid == Text:INVALID_TEXT_DRAW)
 	{
 		if(s_rgiCancelTick[playerid] > GetTickCount())
 		{
 			s_rgiCancelTick[playerid] = 0;
 			return ~1;
+		}
+		else
+		{
+			CallLocalFunction("OnPlayerPressEsc", "i", playerid);
 		}
 	}
 

@@ -56,6 +56,16 @@ Transition_StartInline(Func:cb<>, playerid, bool:in, count)
 	return 1;
 }
 
+Transition_Pause(playerid)
+{
+	if(!Transition_IsActive(playerid))
+		return 0;
+
+	KillTimer(GetPVarInt(playerid, !"transition_timer"));
+
+	return 1;
+}
+
 Transition_Resume(playerid)
 {
 	if(!Transition_IsActive(playerid))

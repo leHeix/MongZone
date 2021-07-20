@@ -7,6 +7,8 @@
 #define PP_SYNTAX_STRING_OP
 #define PP_SYNAX_GENERIC
 #define PP_SYNTAX_@
+#define PP_SYNTAX_FOR_POOL
+#define PP_SYNTAX_FOR_LIST
 // ysi must-haves
 #define YSI_NO_HEAP_MALLOC
 #define YSI_NO_MODE_CACHE
@@ -87,7 +89,6 @@ L1:
 #include <YSI_Data\y_bit>
 #include <YSI_Extra\y_inline_mysql>
 #include <YSI_Extra\y_inline_bcrypt>
-#include <YSI_Extra\y_inline_timers>
 #include <YSI_Server\y_scriptinit>
 #include <YSI_Visual\y_dialog>
 
@@ -106,13 +107,18 @@ L1:
 #include "core/config/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
+#include "core/timers/header.pwn"
 #include "player/account/header.pwn"
+#include "player/auth/header.pwn"
 
 // Functions
 ///////////////
+#include "core/utils/functions.pwn"
 #include "core/config/functions.pwn"
 #include "core/transitions/functions.pwn"
+#include "core/timers/functions.pwn"
 #include "player/account/functions.pwn"
+#include "player/auth/functions.pwn"
 
 // Callbacks
 ///////////////
@@ -120,10 +126,12 @@ L1:
 #include "core/config/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
+#include "core/timers/callbacks.pwn"
 #include "player/account/callbacks.pwn"
+#include "player/auth/callbacks.pwn"
 
 public OnGameModeInit()
-{
+{	
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");
@@ -143,4 +151,6 @@ public OnGameModeInit()
 	#endif
 
 	CA_Init();
+
+	return 1;
 }

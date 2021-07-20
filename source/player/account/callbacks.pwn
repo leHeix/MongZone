@@ -12,7 +12,7 @@ public OnPlayerDataFetched(playerid)
 
 	if(exists)
 	{
-		Bit_Let(Player_Flags(playerid), PFLAG_REGISTERED);
+		Bit_Set(Player_Flags(playerid), PFLAG_REGISTERED, true);
 
 		cache_get_value_name_int(0, !"ID", Player_AccountID(playerid));
 		cache_get_value_name(0, !"PASSWORD", p_szPasswordHash[playerid]);
@@ -52,7 +52,7 @@ hook OnPlayerConnect(playerid)
 	GetPlayerName(playerid, Player_GetName(playerid), MAX_PLAYER_NAME);
 	GetPlayerIp(playerid, Player_GetIp(playerid));
 
-	Bit_Let(Player_Flags(playerid), PFLAG_AUTHENTICATING);
+	Bit_Set(Player_Flags(playerid), PFLAG_AUTHENTICATING, true);
 
 	new query[65];
 	mysql_format(g_hDatabase, query, sizeof(query), "SELECT * FROM USERS WHERE `NAME` = '%e';", Player_GetName(playerid));
