@@ -92,6 +92,8 @@ L1:
 #include <YSI_Server\y_scriptinit>
 #include <YSI_Visual\y_dialog>
 
+DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
+
 #include <amx/codescan>
 #include <amx/opcode>
 #include <amx/amx_memory>
@@ -105,6 +107,7 @@ L1:
 #include "core/utils/header.pwn"
 #include "core/database/header.pwn"
 #include "core/config/header.pwn"
+#include "core/async/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "core/timers/header.pwn"
@@ -117,6 +120,7 @@ L1:
 #include "core/config/functions.pwn"
 #include "core/transitions/functions.pwn"
 #include "core/timers/functions.pwn"
+#include "core/async/functions.pwn"
 #include "player/account/functions.pwn"
 #include "player/auth/functions.pwn"
 
@@ -127,6 +131,7 @@ L1:
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
 #include "core/timers/callbacks.pwn"
+#include "core/async/callbacks.pwn"
 #include "player/account/callbacks.pwn"
 #include "player/auth/callbacks.pwn"
 
