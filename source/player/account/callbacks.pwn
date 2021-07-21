@@ -63,6 +63,9 @@ hook OnPlayerConnect(playerid)
 
 hook OnPlayerDisconnect(playerid, reason)
 {
+	Iter_Remove(Admins, playerid);
+	Iter_Remove(LoggedIn, playerid);
+	
 	Account_Save(playerid);
 
 	g_rgePlayerData[playerid] = g_rgePlayerData[MAX_PLAYERS];

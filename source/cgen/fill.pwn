@@ -37,7 +37,7 @@ static stock ReplaceFillInstr(const match[CodeScanner])
 
 	// nop current opcodes so we can generate our own
 	CodeScanNOPMatch(match);
-
+	
 	WriteAmxMemory(cip, _:const_pri_op);
 	WriteAmxMemory(cip + 4, value);
 	WriteAmxMemory(cip + 8, _:addr_alt_op);

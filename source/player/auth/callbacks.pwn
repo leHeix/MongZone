@@ -131,6 +131,8 @@ hook OnPlayerPressEsc(playerid)
 
 			inline const OnRegister()
 			{
+				Bit_Set(Player_Flags(playerid), PFLAG_REGISTERED, true);
+				
 				inline const OnIntroEnd()
 				{
 					//SendClientMessagef(playerid, )
@@ -326,10 +328,18 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid)
 
 					SetPlayerVirtualWorld(playerid, Player_VirtualWorld(playerid));
 					SetPlayerInterior(playerid, Player_Interior(playerid));
+					SetPlayerHealth(playerid, Player_Health(playerid));
+					SetPlayerArmour(playerid, Player_Armour(playerid));
+					GivePlayerMoney(playerid, Player_Money(playerid));
 
 					SetCameraBehindPlayer(playerid);
 					
 					Transition_Resume(playerid);
+
+					Iter_Add(LoggedIn, playerid);
+
+					if(Player_Rank(playerid))
+						Iter_Add(Admins, playerid);
 				}
 				Transition_StartInline(using inline ScreenBlacked, playerid, 255, TRANSITION_IN);
 			}
