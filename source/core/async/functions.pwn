@@ -15,7 +15,7 @@ FCNPC_AwaitVehicleEntry(npcid, {F@_@, F@_@ii}:func, fun_tag = tagof(func))
 FCNPC_AwaitPlaybackEnd(npcid, Func:cb<>)
 {
 	Indirect_Claim(cb);
-	g_rgiTasks[npcid][NPC_TASK_VEHICLE_ENTRY] = _:cb;
+	g_rgiTasks[npcid][NPC_TASK_PLAYBACK_END] = _:cb;
 
 	return 1;
 }
