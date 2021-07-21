@@ -93,10 +93,10 @@ Account_Save(playerid)
 
 Player_GetSpawnPos(playerid, &Float:x, &Float:y, &Float:z, &Float:angle)
 {
-	x = g_rgePlayerData[playerid][e_fPlayerSpawnX];
-	y = g_rgePlayerData[playerid][e_fPlayerSpawnY];
-	z = g_rgePlayerData[playerid][e_fPlayerSpawnZ];
-	angle = g_rgePlayerData[playerid][e_fPlayerSpawnAngle];
+	x = g_rgePlayerData[playerid][e_fSpawnPosX];
+	y = g_rgePlayerData[playerid][e_fSpawnPosY];
+	z = g_rgePlayerData[playerid][e_fSpawnPosZ];
+	angle = g_rgePlayerData[playerid][e_fSpawnPosAngle];
 	return 1;
 }
 

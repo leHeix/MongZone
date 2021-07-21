@@ -136,7 +136,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "player/auth/callbacks.pwn"
 
 public OnGameModeInit()
-{	
+{
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");

@@ -36,7 +36,7 @@ Transition_Stop(playerid)
 	return 1;
 }
 
-Transition_StartInline(Func:cb<>, playerid, bool:in, count)
+Transition_StartInline(Func:cb<>, playerid, count, bool:in)
 {
 	Indirect_Claim(cb);
 

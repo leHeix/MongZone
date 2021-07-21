@@ -13,7 +13,7 @@ enum _:eTimerData {
 
 new
 	g_rgiRunningTimer = -1,
-	Alloc:g_rgPlayerTimers[MAX_PLAYERS];
+	g_rgPlayerTimers[MAX_PLAYERS + 1][MAX_PLAYER_TIMERS][eTimerData];
 
 forward InlineTimerDone(playerid, timer_idx, bool:repeat);
 
