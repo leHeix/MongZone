@@ -211,6 +211,7 @@ public __Intro_ThirteenthWait(playerid)
 {	
 	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver]);
 	FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPlayer]);
+	FCNPC_Kill(g_rgeIntroData[playerid][e_iIntroPlayer]);
 
 	inline const ScreenBlacked()
 	{
@@ -246,12 +247,10 @@ public __Intro_FourteenthWait(playerid)
 	FCNPC_StartPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver], "taxi-go-out");
 
 	inline const PlaybackEnd()
-	{
+	{		
 		FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iTaxiDriver]);
 		FCNPC_Kill(g_rgeIntroData[playerid][e_iTaxiDriver]);
 		DestroyVehicle(GetPVarInt(playerid, !"introduction_taxi"));
-		FCNPC_StopPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPlayer]);
-		FCNPC_Kill(g_rgeIntroData[playerid][e_iIntroPlayer]);
 
 		InterpolateCameraPos(playerid, 1471.012817, -1744.991333, 17.595380, 1483.190063, -1741.976318, 14.566541, 5000);
 		InterpolateCameraLookAt(playerid, 1475.369384, -1742.709228, 16.694084, 1483.244384, -1737.013183, 13.962552, 5000);

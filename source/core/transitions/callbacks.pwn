@@ -8,6 +8,7 @@ static RunTransitionCallback(playerid, count, bool:in, task_count, bool:task_in)
 	if(GetPVarType(playerid, !"transition_callback") != PLAYER_VARTYPE_NONE && in == task_in && count == task_count)
 	{
 		new fun = GetPVarInt(playerid, !"transition_callback");
+		DeletePVar(playerid, !"transition_callback");
 
 		@.fun();
 
@@ -18,7 +19,7 @@ static RunTransitionCallback(playerid, count, bool:in, task_count, bool:task_in)
 }
 
 public TRANSITION_Process(playerid, bool:in, task_count, bool:task_in)
-{
+{	
 	new count = PlayerTextDrawGetBoxColor(playerid, p_tdTransition{playerid});
 
 	if(in)

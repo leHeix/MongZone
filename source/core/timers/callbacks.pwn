@@ -8,7 +8,6 @@
 hook OnPlayerDisconnect(playerid, reason)
 {
 	PlayerTimer_KillAll(playerid);
-
 	return 1;
 }
 

@@ -5,7 +5,7 @@
 
 Account_RegisterConnection(playerid)
 {
-	return mysql_tquery_s(g_hDatabase, @f("INSERT INTO `CONNECTION_LOGS` VALUES (%i, '%e');", Player_AccountID(playerid), Player_GetIp(playerid)));
+	return mysql_tquery_s(g_hDatabase, @f("INSERT INTO `CONNECTION_LOGS` (ACCOUNT_ID, IP_ADDRESS) VALUES (%i, '%e');", Player_AccountID(playerid), Player_GetIp(playerid)));
 }
 
 Account_Register(playerid, Func:cb<> = F@_@:0)
@@ -65,7 +65,7 @@ Account_Save(playerid)
 
 	mysql_tquery_s(g_hDatabase, @f("\
 			UPDATE `USERS` SET \
-				`PLAYED_TIME` = `PLAYED_TIME` + (UNIX_TIMESTAMP() - `CURRENT_CONNECION`), \
+				`PLAYED_TIME` = `PLAYED_TIME` + (UNIX_TIMESTAMP() - `CURRENT_CONNECTION`), \
 				`LAST_CONNECTION` = CURRENT_TIMESTAMP(), \
 				`LEVEL` = %i, \
 				`XP` = %i, \
@@ -78,7 +78,7 @@ Account_Save(playerid)
 				`HUNGER` = %.2f, \
 				`THIRST` = %.2f, \
 				`SKIN` = %i, \
-				`CURRENT_CONNECTION` = 0, \
+				`CURRENT_CONNECTION` = 0 \
 			WHERE `ID` = %i;\
 		", 
 		Player_Level(playerid), Player_XP(playerid),
