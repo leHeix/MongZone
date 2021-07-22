@@ -76,6 +76,7 @@ L1:
 #include <Pawn.CMD>
 #include <a_mysql>
 #include <bcrypt>
+#include <td-string-width>
 
 // Patches
 /////////////
@@ -111,6 +112,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "core/timers/header.pwn"
+#include "server/notifications/header.pwn"
 #include "player/account/header.pwn"
 #include "player/auth/header.pwn"
 
@@ -121,6 +123,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "core/transitions/functions.pwn"
 #include "core/timers/functions.pwn"
 #include "core/async/functions.pwn"
+#include "server/notifications/functions.pwn"
 #include "player/account/functions.pwn"
 #include "player/auth/functions.pwn"
 
@@ -132,6 +135,7 @@ DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
 #include "core/transitions/callbacks.pwn"
 #include "core/timers/callbacks.pwn"
 #include "core/async/callbacks.pwn"
+#include "server/notifications/callbacks.pwn"
 #include "player/account/callbacks.pwn"
 #include "player/auth/callbacks.pwn"
 
@@ -157,5 +161,17 @@ public OnGameModeInit()
 
 	CA_Init();
 
+	return 1;
+}
+
+CMD:test(playerid, const params[])
+{
+	Notification_Show(playerid, @f("Bienvenido a MongZone, %s. Tu cuenta fue registrada correctamente. Puedes preguntar sobre el servidor desde el canal de dudas ~y~/n~w~.", Player_GetName(playerid)), 8000);
+	return 1;
+}
+
+CMD:hola(playerid, const params[])
+{
+	Notification_Show(playerid, str_new(params), 3500);
 	return 1;
 }

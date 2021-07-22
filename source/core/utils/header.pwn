@@ -10,5 +10,6 @@ enum {
 
 #define @f str_format
 native mysql_tquery_s(MySQL:handle, ConstAmxString:query, const callback[] = "", const format[] = "", {Float,_}:...) = mysql_tquery;
+native PlayerTextDrawSetString_s(playerid, PlayerText:text, ConstAmxString:string) = PlayerTextDrawSetString;
 
 forward OnPlayerPressEsc(playerid);

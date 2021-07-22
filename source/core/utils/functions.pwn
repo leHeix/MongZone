@@ -77,6 +77,67 @@ Str_FixEncoding(const base[])
 	return result;
 }
 
+String:Str_FixEncoding_s(ConstStringTag:orig)
+{
+	new String:str = str_clone(orig);
+
+	new c, i = -1;
+	while((c = str_getc(str, ++i)) != INVALID_CHAR)
+	{
+		switch (c)
+		{
+			case 'à': str_setc(str, i, 151);
+			case 'á': str_setc(str, i, 152);
+			case 'â': str_setc(str, i, 153);
+			case 'ä': str_setc(str, i, 154);
+			case 'À': str_setc(str, i, 128);
+			case 'Á': str_setc(str, i, 129);
+			case 'Â': str_setc(str, i, 130);
+			case 'Ä': str_setc(str, i, 131);
+			case 'è': str_setc(str, i, 157);
+			case 'é': str_setc(str, i, 158);
+			case 'ê': str_setc(str, i, 159);
+			case 'ë': str_setc(str, i, 160);
+			case 'È': str_setc(str, i, 134);
+			case 'É': str_setc(str, i, 135);
+			case 'Ê': str_setc(str, i, 136);
+			case 'Ë': str_setc(str, i, 137);
+			case 'ì': str_setc(str, i, 161);
+			case 'í': str_setc(str, i, 162);
+			case 'î': str_setc(str, i, 163);
+			case 'ï': str_setc(str, i, 164);
+			case 'Ì': str_setc(str, i, 138);
+			case 'Í': str_setc(str, i, 139);
+			case 'Î': str_setc(str, i, 140);
+			case 'Ï': str_setc(str, i, 141);
+			case 'ò': str_setc(str, i, 165);
+			case 'ó': str_setc(str, i, 166);
+			case 'ô': str_setc(str, i, 167);
+			case 'ö': str_setc(str, i, 168);
+			case 'Ò': str_setc(str, i, 142);
+			case 'Ó': str_setc(str, i, 143);
+			case 'Ô': str_setc(str, i, 144);
+			case 'Ö': str_setc(str, i, 145);
+			case 'ù': str_setc(str, i, 169);
+			case 'ú': str_setc(str, i, 170);
+			case 'û': str_setc(str, i, 171);
+			case 'ü': str_setc(str, i, 172);
+			case 'Ù': str_setc(str, i, 146);
+			case 'Ú': str_setc(str, i, 147);
+			case 'Û': str_setc(str, i, 148);
+			case 'Ü': str_setc(str, i, 149);
+			case 'ñ': str_setc(str, i, 174);
+			case 'Ñ': str_setc(str, i, 173);
+			case '¡': str_setc(str, i, 64);
+			case '¿': str_setc(str, i, 175);
+			case '`': str_setc(str, i, 177);
+			case '&': str_setc(str, i, 38);
+		}
+	}
+
+	return str;
+}
+
 TextDraw_DelayedSelect(playerid, hovercolor)
 {
 	inline const Due()
