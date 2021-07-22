@@ -43,7 +43,6 @@ public __Intro_SecondWait(playerid)
 	
 		inline const ScreenDim()
 		{
-			print("screendim");
 			FCNPC_StartPlayingPlayback(g_rgeIntroData[playerid][e_iIntroPlayer], "walk-into-baggage");
 
 			InterpolateCameraPos(playerid, 1704.426269, -2209.828369, 1041.235351, 1699.402343, -2225.497314, 1039.668945, 12500);
@@ -51,7 +50,6 @@ public __Intro_SecondWait(playerid)
 
 			inline const OnEnd()
 			{
-				print("onend called");
 				__Intro_ThirdWait(playerid);
 			}
 			FCNPC_AwaitPlaybackEnd(g_rgeIntroData[playerid][e_iIntroPlayer], using inline OnEnd);
@@ -64,8 +62,7 @@ public __Intro_SecondWait(playerid)
 	return 1;
 }
 
-forward __Intro_ThirdWait(playerid);
-public __Intro_ThirdWait(playerid)
+__Intro_ThirdWait(playerid)
 {
 	new object = CreateObject(19624, 1690.1805, -2227.0757, 1039.0792, 87.7799, -0.6600, 0.0000, 200.0);
 	MoveObject(object, 1696.1682,-2227.0432, 1039.0792, 0.7, 87.7799, -0.6600, 0.0000);

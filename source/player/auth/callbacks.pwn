@@ -9,9 +9,9 @@ hook OnScriptInit()
 {
 	for(new i = (MAX_PLAYERS - 1); i != -1; i -= 1)
 	{
-		//g_rgeIntroData[i][e_iIntroPlayer] = FCNPC_Create(Str_Random(24));
-		//g_rgeIntroData[i][e_iIntroPilot] = FCNPC_Create(Str_Random(24));
-		//g_rgeIntroData[i][e_iTaxiDriver] = FCNPC_Create(Str_Random(24));
+		g_rgeIntroData[i][e_iIntroPlayer] = FCNPC_Create(Str_Random(24));
+		g_rgeIntroData[i][e_iIntroPilot] = FCNPC_Create(Str_Random(24));
+		g_rgeIntroData[i][e_iTaxiDriver] = FCNPC_Create(Str_Random(24));
 	}
 
 	return 1;
@@ -36,8 +36,6 @@ hook OnPlayerConnect(playerid)
 
 	TogglePlayerSpectating(playerid, true);
 	SetPlayerVirtualWorld(playerid, VW_PLAYER + playerid);
-	SetPlayerWeather(playerid, 0);
-	SetPlayerTime(playerid, 23, 00);
 
 	return 1;
 }
@@ -89,6 +87,9 @@ public OnPlayerDataLoaded(playerid)
 			Intro_ToggleTextdraws(playerid, true);
 		}
 
+		SetPlayerWeather(playerid, 0);
+		SetPlayerTime(playerid, 23, 00);
+
 		Transition_Resume(playerid);
 	}
 	Transition_StartInline(using inline ScreenBlacked, playerid, 255, TRANSITION_IN);
@@ -135,7 +136,8 @@ hook OnPlayerPressEsc(playerid)
 
 				inline const OnIntroEnd()
 				{
-					Notification_Show(playerid, @f("Bienvenido a MongZone, %s. Tu cuenta fue registrada correctamente.", Player_GetName(playerid)), 8000);
+					Notification_Show(playerid, @("Se te ha habilitado el acceso al canal ~y~/n~w~. ¡Pregunta lo que quieras!"), 10000);
+					Notification_Show(playerid, @f("Bienvenido a MongZone, %s. Tu cuenta fue registrada correctamente.", Player_GetName(playerid)), 10000);
 				}
 				Intro_Play(playerid, using inline OnIntroEnd);
 			}
@@ -254,10 +256,15 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid)
 	// continue button
 	if(clickedid == g_tdRegisterAcc[19])
 	{
+		CancelSelectTextDraw(playerid);
+
 		if(!Bit_Get(Player_Flags(playerid), PFLAG_REGISTERED))
 		{
-			if(!p_szPassword[playerid][0])
+			if(isnull(p_szPassword[playerid]))
+			{
+				SelectTextDraw(playerid, 0xD2B567FF);
 				return Dialog_Show(playerid, DIALOG_STYLE_MSGBOX, "{D2B567}Error", "{3E3D53}- {FFFFFF}Introduce una {D2B567}contraseña válida {FFFFFF}para continuar.", "Entendido", "");
+			}
 
 			Bit_Set(Player_Flags(playerid), PFLAG_CUSTOMIZING_PLAYER, true);
 
@@ -304,12 +311,18 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid)
 		else
 		{
 			if(isnull(p_szPassword[playerid]))
+			{
+				SelectTextDraw(playerid, 0xD2B567FF);
 				return Dialog_Show(playerid, DIALOG_STYLE_MSGBOX, "{D2B567}Error", "{3E3D53}- {FFFFFF}Introduce la {D2B567}contraseña {FFFFFF}de tu cuenta para continuar.", "Entendido", "");
+			}
 
 			inline const CheckResult(bool:result)
 			{
 				if(!result)
+				{
+					SelectTextDraw(playerid, 0xD2B567FF);
 					return Dialog_Show(playerid, DIALOG_STYLE_MSGBOX, "{D2B567}Error", "{3E3D53}- {FFFFFF}La {D2B567}contraseña {FFFFFF}es incorrecta.", "Entendido", "");
+				}
 
 				Bit_Set(Player_Flags(playerid), PFLAG_AUTHENTICATING, false);
 				FillMemory(p_szPassword[playerid], '\0');
@@ -340,6 +353,8 @@ hook OnPlayerClickTextDraw(playerid, Text:clickedid)
 
 					if(Player_Rank(playerid))
 						Iter_Add(Admins, playerid);
+
+					Notification_Show(playerid, @f("Bienvenido a MongZone, %s. Tu última conexión fue el ~y~%s~w~.", Player_GetName(playerid), Player_GetLastConnection(playerid)));
 				}
 				Transition_StartInline(using inline ScreenBlacked, playerid, 255, TRANSITION_IN);
 			}

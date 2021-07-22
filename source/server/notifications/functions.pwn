@@ -46,6 +46,7 @@ Notification_Show(playerid, String:text, time = 2000)
 	for(new i = 0, j = str_len(fixed_string); i <= j; i += 45)
 		size -= 0.015;
 
+	// Bad way to do this but PawnPlus doesn't get along with the JIT
 	new str[512];
 	str_get(fixed_string, str);
 	SplitTextDrawString(str, 127.5, size, 1, 1, true);
