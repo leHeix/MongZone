@@ -73,3 +73,18 @@ hook OnPlayerDisconnect(playerid, reason)
 
 	return 1;
 }
+
+hook OPPauseStateChange(playerid, pausestate)
+{
+	if(pausestate)
+	{
+		g_rgePlayerData[playerid][e_iPlayerPausedBegin] = gettime();
+	}
+	else if(g_rgePlayerData[playerid][e_iPlayerPausedBegin] != 0)
+	{
+		g_rgePlayerData[playerid][e_iPlayerPausedTime] = (gettime() - g_rgePlayerData[playerid][e_iPlayerPausedBegin]);
+		g_rgePlayerData[playerid][e_iPlayerPausedBegin] = 0;
+	}
+
+	return 1;
+}

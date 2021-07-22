@@ -31,7 +31,11 @@ enum ePlayerData {
 	Float:e_fPlayerThirst,
 
 	e_iRankLevel,
-	e_iPlayedTime
+	e_iPlayedTime,
+
+	/* MISC DATA, PROBABLY NOT SAVED IN THE DABATASE */
+	e_iPlayerPausedBegin,
+	e_iPlayerPausedTime,
 };
 
 enum {

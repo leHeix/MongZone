@@ -65,7 +65,7 @@ Account_Save(playerid)
 
 	mysql_tquery_s(g_hDatabase, @f("\
 			UPDATE `USERS` SET \
-				`PLAYED_TIME` = `PLAYED_TIME` + (UNIX_TIMESTAMP() - `CURRENT_CONNECTION`), \
+				`PLAYED_TIME` = (`PLAYED_TIME` + (UNIX_TIMESTAMP() - `CURRENT_CONNECTION`)) - %i, \
 				`LAST_CONNECTION` = CURRENT_TIMESTAMP(), \
 				`LEVEL` = %i, \
 				`XP` = %i, \
@@ -80,7 +80,8 @@ Account_Save(playerid)
 				`SKIN` = %i, \
 				`CURRENT_CONNECTION` = 0 \
 			WHERE `ID` = %i;\
-		", 
+		",
+		g_rgePlayerData[playerid][e_iPlayerPausedTime],
 		Player_Level(playerid), Player_XP(playerid),
 		g_rgePlayerData[playerid][e_fSpawnPosX], g_rgePlayerData[playerid][e_fSpawnPosY], g_rgePlayerData[playerid][e_fSpawnPosZ], g_rgePlayerData[playerid][e_fSpawnPosAngle], Player_VirtualWorld(playerid), Player_Interior(playerid),
 		Player_Hunger(playerid), Player_Thirst(playerid),

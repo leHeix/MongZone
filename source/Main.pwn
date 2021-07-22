@@ -94,6 +94,7 @@ L1:
 #include <YSI_Visual\y_dialog>
 
 DEFINE_HOOK_REPLACEMENT__(OnVehicle, OV);
+DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 
 #include <amx/codescan>
 #include <amx/opcode>
