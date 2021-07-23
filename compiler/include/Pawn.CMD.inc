@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2016-2020 urShadow
+ * Copyright (c) 2016-2021 katursis
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,7 @@
 #if !defined PAWNCMD_INC_
     #define PAWNCMD_INC_
 
-    #define PAWNCMD_VERSION 333
+    #define PAWNCMD_VERSION 334
     #define PAWNCMD_INCLUDE_VERSION PAWNCMD_VERSION // backward compatibility
 
     #if !defined __cplusplus

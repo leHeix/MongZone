@@ -74,6 +74,7 @@ L1:
 #include <PawnPlus>
 #include <Pawn.RakNet>
 #include <Pawn.CMD>
+#include <Pawn.Regex>
 #include <a_mysql>
 #include <bcrypt>
 #include <td-string-width>
@@ -106,6 +107,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 
 // Headers
 /////////////
+#include "core/utils/colors.pwn"
 #include "core/utils/header.pwn"
 #include "core/database/header.pwn"
 #include "core/config/header.pwn"
@@ -124,8 +126,9 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/transitions/functions.pwn"
 #include "core/timers/functions.pwn"
 #include "core/async/functions.pwn"
-#include "server/notifications/functions.pwn"
 #include "player/account/functions.pwn"
+#include "server/notifications/functions.pwn"
+#include "server/chat/functions.pwn"
 #include "player/auth/functions.pwn"
 
 // Callbacks
@@ -136,12 +139,16 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/transitions/callbacks.pwn"
 #include "core/timers/callbacks.pwn"
 #include "core/async/callbacks.pwn"
-#include "server/notifications/callbacks.pwn"
 #include "player/account/callbacks.pwn"
+#include "server/notifications/callbacks.pwn"
+#include "server/chat/callbacks.pwn"
 #include "player/auth/callbacks.pwn"
 
+// Commands
+//////////////
+
 public OnGameModeInit()
-{
+{	
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");

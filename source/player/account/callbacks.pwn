@@ -35,8 +35,9 @@ public OnPlayerDataFetched(playerid)
 		cache_get_value_name_float(0, !"THIRST", Player_Thirst(playerid));
 		cache_get_value_name_int(0, !"ADMIN", Player_Rank(playerid));
 		cache_get_value_name_int(0, !"PLAYED_TIME", Player_PlayedTime(playerid));
+		g_rgePlayerData[playerid][e_iCurrentConnectionTime] = gettime();
 
-		mysql_tquery_s(g_hDatabase, @f("UPDATE `USERS` SET `CURRENT_CONNECTION` = UNIX_TIMESTAMP() WHERE `ID` = %i;", Player_AccountID(playerid)));
+		mysql_tquery_s(g_hDatabase, @f("UPDATE `USERS` SET `CURRENT_CONNECTION` = %i WHERE `ID` = %i;", g_rgePlayerData[playerid][e_iCurrentConnectionTime], Player_AccountID(playerid)));
 		Account_RegisterConnection(playerid);
 	}
 

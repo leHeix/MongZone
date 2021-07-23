@@ -9,9 +9,9 @@ hook OnScriptInit()
 {
 	for(new i = (MAX_PLAYERS - 1); i != -1; i -= 1)
 	{
-		g_rgeIntroData[i][e_iIntroPlayer] = FCNPC_Create(Str_Random(24));
-		g_rgeIntroData[i][e_iIntroPilot] = FCNPC_Create(Str_Random(24));
-		g_rgeIntroData[i][e_iTaxiDriver] = FCNPC_Create(Str_Random(24));
+		// g_rgeIntroData[i][e_iIntroPlayer] = FCNPC_Create(Str_Random(24));
+		// g_rgeIntroData[i][e_iIntroPilot] = FCNPC_Create(Str_Random(24));
+		// g_rgeIntroData[i][e_iTaxiDriver] = FCNPC_Create(Str_Random(24));
 	}
 
 	return 1;
@@ -133,6 +133,7 @@ hook OnPlayerPressEsc(playerid)
 			inline const OnRegister()
 			{
 				Bit_Set(Player_Flags(playerid), PFLAG_REGISTERED, true);
+				Bit_Set(Player_Flags(playerid), PFLAG_AUTHENTICATING, false);
 
 				inline const OnIntroEnd()
 				{

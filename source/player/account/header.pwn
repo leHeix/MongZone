@@ -8,6 +8,16 @@ enum {
 	PLAYER_SEX_FEMALE = 1
 };
 
+enum {
+	RANK_LEVEL_USER = 0,
+	RANK_LEVEL_ASSISTANT,
+	RANK_LEVEL_MODERATOR,
+	RANK_LEVEL_GAME_OPERATOR,
+	RANK_LEVEL_ADMIN,
+	RANK_LEVEL_MONG,
+	RANK_LEVEL_OWNER = RANK_LEVEL_MONG
+};
+
 enum ePlayerData {
 	e_iAccountId,
 	e_szPlayerName[MAX_PLAYER_NAME],
@@ -34,6 +44,7 @@ enum ePlayerData {
 	e_iPlayedTime,
 
 	/* MISC DATA, PROBABLY NOT SAVED IN THE DABATASE */
+	e_iCurrentConnectionTime, 
 	e_iPlayerPausedBegin,
 	e_iPlayerPausedTime,
 };
@@ -82,6 +93,7 @@ new
 #define Player_Thirst(%0) (g_rgePlayerData[(%0)][e_fPlayerThirst])
 #define Player_Rank(%0) (g_rgePlayerData[(%0)][e_iRankLevel])
 #define Player_PlayedTime(%0) (g_rgePlayerData[(%0)][e_iPlayedTime])
+#define Player_PlayedLocalTime(%0) ((gettime() - g_rgePlayerData[(%0)][e_iCurrentConnectionTime]) + g_rgePlayerData[(%0)][e_iPlayedTime] - g_rgePlayerData[(%0)][e_iPlayerPausedTime])
 
 forward OnPlayerDataFetched(playerid);
 forward OnPlayerDataLoaded(playerid);
