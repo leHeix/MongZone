@@ -18,4 +18,4 @@ new
 forward InlineTimerDone(playerid, timer_idx, bool:repeat);
 
 #define GetRunningTimerID() (g_rgiRunningTimer)
-#define Player_Timers(%0) (g_rglPlayerTimers[(%0)])
+#define Player_Timers(%0) (g_rgPlayerTimers[(%0)])

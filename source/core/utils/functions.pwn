@@ -16,6 +16,18 @@ Str_Random(len = 10)
 	return str_result;
 }
 
+stock Str_PackedRandom(len = 10)
+{
+	new str_result[32 char];
+
+	while(--len != -1)
+	{
+		str_result{len} = random(2) ? (random(26) + (random(2) ? 'a' : 'A')) : (random(10) + '0');
+	}
+
+	return str_result;
+}
+
 Str_FixEncoding(const base[])
 {
 	new result[256];

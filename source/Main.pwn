@@ -18,7 +18,7 @@
 #define FOREACH_NO_LOCALS
 #define FOREACH_NO_VEHICLES
 #define FOREACH_NO_ACTORS
-#define FOREACH_NO_STREAMED
+// #define FOREACH_NO_STREAMED
 
 #define FCNPC_DISABLE_VERSION_CHECK
 
@@ -86,6 +86,7 @@ L1:
 
 #include <YSI_Coding\y_hooks>
 #include <YSI_Coding\y_inline>
+#include <YSI_Coding\y_stringhash>
 #include <YSI_Core\y_utils>
 #include <YSI_Data\y_iterate>
 #include <YSI_Data\y_bit>
@@ -100,6 +101,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include <amx/codescan>
 #include <amx/opcode>
 #include <amx/amx_memory>
+#include <amx/amx_header>
 
 // Custom code generation
 ////////////////////////////
@@ -115,6 +117,8 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "core/timers/header.pwn"
+#include "core/commands/header.pwn"
+#include "server/chat/header.pwn"
 #include "server/notifications/header.pwn"
 #include "player/account/header.pwn"
 #include "player/auth/header.pwn"
@@ -126,6 +130,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/transitions/functions.pwn"
 #include "core/timers/functions.pwn"
 #include "core/async/functions.pwn"
+#include "core/commands/functions.pwn"
 #include "player/account/functions.pwn"
 #include "server/notifications/functions.pwn"
 #include "server/chat/functions.pwn"
@@ -139,6 +144,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/transitions/callbacks.pwn"
 #include "core/timers/callbacks.pwn"
 #include "core/async/callbacks.pwn"
+#include "core/commands/callbacks.pwn"
 #include "player/account/callbacks.pwn"
 #include "server/notifications/callbacks.pwn"
 #include "server/chat/callbacks.pwn"
@@ -146,6 +152,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 
 // Commands
 //////////////
+#include "server/chat/commands.pwn"
 
 public OnGameModeInit()
 {	

@@ -3,21 +3,15 @@
 #endif
 #define _CHAT_FUNCTIONS_
 
-Player_SendLocalMessage(playerid, const text[], Float:range = 15.0, color = -1, bool:require_streamed = true)
+Player_SendLocalMessage(playerid, const text[], Float:range = 15.0, color = -1)
 {
 	new Float:x, Float:y, Float:z, vw = GetPlayerVirtualWorld(playerid), int = GetPlayerInterior(playerid);
 	GetPlayerPos(playerid, x, y, z);
 
-	foreach(new i : LoggedIn)
+	foreach(new i : StreamedPlayer[playerid])
 	{
 		if(GetPlayerVirtualWorld(i) != vw || GetPlayerInterior(i) != int)
 			continue;
-
-		if(require_streamed && i != playerid)
-		{
-			if(IsPlayerStreamedIn(i, playerid))
-				continue;
-		}
 
 		new Float:distance = GetPlayerDistanceFromPoint(i, x, y, z);
 		if(distance > range)
@@ -27,24 +21,20 @@ Player_SendLocalMessage(playerid, const text[], Float:range = 15.0, color = -1, 
 		SendClientMessage(i, Color_Darken(color, color_relative), text);
 	}
 
+	SendClientMessage(playerid, color, text);
+
 	return 1;
 }
 
-Player_SendLocalMessages(playerid, text_lines[][], line_count, Float:range = 15.0, color = -1, bool:require_streamed = true)
+Player_SendLocalMessages(playerid, text_lines[][], line_count, Float:range = 15.0, color = -1)
 {
 	new Float:x, Float:y, Float:z, vw = GetPlayerVirtualWorld(playerid), int = GetPlayerInterior(playerid);
 	GetPlayerPos(playerid, x, y, z);
 
-	foreach(new i : LoggedIn)
+	foreach(new i : StreamedPlayer[playerid])
 	{
 		if(GetPlayerVirtualWorld(i) != vw || GetPlayerInterior(i) != int)
 			continue;
-
-		if(require_streamed && i != playerid)
-		{
-			if(IsPlayerStreamedIn(i, playerid))
-				continue;
-		}
 
 		new Float:distance = GetPlayerDistanceFromPoint(i, x, y, z);
 		if(distance > range)
@@ -57,24 +47,21 @@ Player_SendLocalMessages(playerid, text_lines[][], line_count, Float:range = 15.
 			SendClientMessage(i, color_darkened, text_lines[j]);
 	}
 
+	for(new j; j != line_count && !isnull(text_lines[j]); ++j)
+		SendClientMessage(playerid, color, text_lines[j]);
+
 	return 1;
 }
 
-stock Player_SendLocalMessage_s(playerid, ConstAmxString:text, Float:range = 15.0, color = -1, bool:require_streamed = true)
+stock Player_SendLocalMessage_s(playerid, ConstStringTag:text, Float:range = 15.0, color = -1)
 {
 	new Float:x, Float:y, Float:z, vw = GetPlayerVirtualWorld(playerid), int = GetPlayerInterior(playerid);
 	GetPlayerPos(playerid, x, y, z);
 
-	foreach(new i : LoggedIn)
+	foreach(new i : StreamedPlayer[playerid])
 	{
 		if(GetPlayerVirtualWorld(i) != vw || GetPlayerInterior(i) != int)
 			continue;
-
-		if(require_streamed && i != playerid)
-		{
-			if(IsPlayerStreamedIn(i, playerid))
-				continue;
-		}
 
 		new Float:distance = GetPlayerDistanceFromPoint(i, x, y, z);
 		if(distance > range)
@@ -83,6 +70,8 @@ stock Player_SendLocalMessage_s(playerid, ConstAmxString:text, Float:range = 15.
 		new color_relative = 255 - floatround(distance);
 		SendClientMessage_s(i, Color_Darken(color, color_relative), text);
 	}
+
+	SendClientMessage_s(i, color, text);
 
 	return 1;
 }

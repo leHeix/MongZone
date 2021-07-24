@@ -744,7 +744,7 @@ hook OnPlayerConnect(playerid)
 	PlayerTextDrawSetProportional(playerid, p_tdRegisterAcc[playerid]{4}, 1);
 	PlayerTextDrawSetSelectable(playerid, p_tdRegisterAcc[playerid]{4}, 1);
 
-	p_tdPlayerCustomization{playerid} = CreatePlayerTextDraw(playerid, 309.000000, 400.000000, "18");
+	p_tdPlayerCustomization{playerid} = CreatePlayerTextDraw(playerid, 309.000000, 400.000000, !"18");
 	PlayerTextDrawFont(playerid, p_tdPlayerCustomization{playerid}, 2);
 	PlayerTextDrawLetterSize(playerid, p_tdPlayerCustomization{playerid}, 0.179166, 1.100000);
 	PlayerTextDrawTextSize(playerid, p_tdPlayerCustomization{playerid}, 11.000000, 36.500000);
@@ -760,7 +760,7 @@ hook OnPlayerConnect(playerid)
 
 	for(new i = 2; i != -1; i -= 1)
 	{
-		p_tdNotifications[playerid][i]{0} = CreatePlayerTextDraw(playerid, 108.000000, 290.000000, "_");
+		p_tdNotifications[playerid][i]{0} = CreatePlayerTextDraw(playerid, 108.000000, 290.000000, !"_");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{0}, 1);
 		PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][i]{0}, 0.600000, 3.799999);
 		PlayerTextDrawTextSize(playerid, p_tdNotifications[playerid][i]{0}, 298.500000, 190.500000);
@@ -774,7 +774,7 @@ hook OnPlayerConnect(playerid)
 		PlayerTextDrawSetProportional(playerid, p_tdNotifications[playerid][i]{0}, 1);
 		PlayerTextDrawSetSelectable(playerid, p_tdNotifications[playerid][i]{0}, 0);
 
-		p_tdNotifications[playerid][i]{1} = CreatePlayerTextDraw(playerid, 17.000000, 293.000000, "_");
+		p_tdNotifications[playerid][i]{1} = CreatePlayerTextDraw(playerid, 17.000000, 293.000000, !"_");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{1}, 1);
 		PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][i]{1}, 0.600000, 3.150002);
 		PlayerTextDrawTextSize(playerid, p_tdNotifications[playerid][i]{1}, 294.500000, -0.500000);
@@ -788,7 +788,7 @@ hook OnPlayerConnect(playerid)
 		PlayerTextDrawSetProportional(playerid, p_tdNotifications[playerid][i]{1}, 1);
 		PlayerTextDrawSetSelectable(playerid, p_tdNotifications[playerid][i]{1}, 0);
 
-		p_tdNotifications[playerid][i]{2} = CreatePlayerTextDraw(playerid, 20.500000, 293.000000, "ld_beat:chit");
+		p_tdNotifications[playerid][i]{2} = CreatePlayerTextDraw(playerid, 20.500000, 293.000000, !"ld_beat:chit");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{2}, 4);
 		PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][i]{2}, 0.600000, 2.000000);
 		PlayerTextDrawTextSize(playerid, p_tdNotifications[playerid][i]{2}, 23.500000, 28.000000);
@@ -802,7 +802,7 @@ hook OnPlayerConnect(playerid)
 		PlayerTextDrawSetProportional(playerid, p_tdNotifications[playerid][i]{2}, 1);
 		PlayerTextDrawSetSelectable(playerid, p_tdNotifications[playerid][i]{2}, 0);
 
-		p_tdNotifications[playerid][i]{3} = CreatePlayerTextDraw(playerid, 29.600000, 299.000000, "?");
+		p_tdNotifications[playerid][i]{3} = CreatePlayerTextDraw(playerid, 29.600000, 299.000000, !"?");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{3}, 3);
 		PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][i]{3}, 0.291666, 1.649999);
 		PlayerTextDrawTextSize(playerid, p_tdNotifications[playerid][i]{3}, 400.000000, 17.000000);
@@ -816,7 +816,7 @@ hook OnPlayerConnect(playerid)
 		PlayerTextDrawSetProportional(playerid, p_tdNotifications[playerid][i]{3}, 1);
 		PlayerTextDrawSetSelectable(playerid, p_tdNotifications[playerid][i]{3}, 0);
 
-		p_tdNotifications[playerid][i]{4} = CreatePlayerTextDraw(playerid, 50.000000, 293.000000, "has mamado el guebo?");
+		p_tdNotifications[playerid][i]{4} = CreatePlayerTextDraw(playerid, 50.000000, 293.000000, !"has mamado el guebo?");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{4}, 1);
 		PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][i]{4}, 0.208333, 1.000000);
 		PlayerTextDrawTextSize(playerid, p_tdNotifications[playerid][i]{4}, 200.500000, 17.000000);
@@ -830,7 +830,7 @@ hook OnPlayerConnect(playerid)
 		PlayerTextDrawSetProportional(playerid, p_tdNotifications[playerid][i]{4}, 1);
 		PlayerTextDrawSetSelectable(playerid, p_tdNotifications[playerid][i]{4}, 0);
 
-		p_tdNotifications[playerid][i]{5} = CreatePlayerTextDraw(playerid, 198.000000, 289.000000, "X");
+		p_tdNotifications[playerid][i]{5} = CreatePlayerTextDraw(playerid, 198.000000, 289.000000, !"X");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{5}, 1);
 		PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][i]{5}, 0.208333, 0.899999);
 		PlayerTextDrawTextSize(playerid, p_tdNotifications[playerid][i]{5}, 200.500000, 17.000000);

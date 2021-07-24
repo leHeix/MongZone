@@ -38,7 +38,7 @@ hook OnPlayerText(playerid, text[])
 	Regex_Delete(message_regex);
 
 	new message[192];
-	if(GetPlayerDrunkLevel(playerid) >= 2000)
+	if(GetPlayerDrunkLevel(playerid) > 2000)
 		format(message, sizeof(message), "%s alcoholizado dice: %s", Player_GetName(playerid), text);
 	else
 		format(message, sizeof(message), "%s dice: %s", Player_GetName(playerid), text);
@@ -48,6 +48,46 @@ hook OnPlayerText(playerid, text[])
 
 	Player_SendLocalMessages(playerid, lines, 2);
 	SetPlayerChatBubble(playerid, text, -1, 5.0, 5000);
-
+	
 	return 0;
+}
+
+hook OnPlayerCommandReceived(playerid, cmd[], params[], flags)
+{
+	/*
+		quick explanation:
+		our flag thing uses 2 bytes for the flags and 2 bytes for the level (4 bytes, a cell)
+
+		cell representation:
+			00000000 00000000 00000000 00000000
+			----------------- -----------------
+			      level             flags
+	*/
+
+	new cmd_flags = (flags & ~(1 << 16));
+	new cmd_level = (flags >>> 16);
+
+	if(cmd_level != Player_Rank(playerid))
+		return 0;
+
+	if(!(cmd_flags & CMD_NO_COOLDOWN) && g_rgiPlayerCommandCooldown[playerid] + 1000 > GetTickCount())
+	{
+		SendClientMessage(playerid, 0xFFA02BFF, "Solo puedes enviar un comando por segundo. Algunos comandos no disponen de tiempo de espera.");
+		return 0;
+	}
+
+	g_rgiPlayerCommandCooldown[playerid] = GetTickCount();
+
+	return 1;
+}
+
+hook OPCommandPerformed(playerid, cmd[], params[], result, flags)
+{
+	if(result == -1)
+	{
+		SendClientMessagef(playerid, -1, "({FF3300}/%s{FFFFFF}) Comando desconocido, usa {DBED15}/ayuda{FFFFFF} para recibir ayuda.", cmd);
+		return 0;
+	}
+
+	return 1;
 }
