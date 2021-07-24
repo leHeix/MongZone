@@ -13,37 +13,36 @@ static stock ReplaceFillInstr(const match[CodeScanner])
 	new
 		cip = CodeScanGetMatchAddressData(match);
 
+	#pragma warning push
+	#pragma warning disable 213 
+
 	/* parameters */
 	new
 		size = CodeScanGetMatchHole(match, 0),
 		value = CodeScanGetMatchHole(match, 1),
-		destination = CodeScanGetMatchHole(match, 2);
-
-	#pragma warning push
-	#pragma warning disable 213 
-	/* opcodes */
-	new
-		Opcode:fill_op = RelocateOpcode(OP_FILL),
-		Opcode:addr_alt_op =
-			(
-				((ReadAmxMemory(cip + 24) == _:RelocateOpcode(OP_CONST_PRI)) || 
-				(ReadAmxMemory(cip + 16) == _:RelocateOpcode(OP_PUSH_C)))
-				? RelocateOpcode(OP_CONST_ALT)
-				: RelocateOpcode(OP_ADDR_ALT)
-			),
-		Opcode:const_pri_op = RelocateOpcode(OP_CONST_PRI);
+		destination = CodeScanGetMatchHole(match, 2),
+		bool:is_global = (ReadAmxMemory(cip + 24) == _:RelocateOpcode(OP_CONST_PRI)) || (ReadAmxMemory(cip + 16) == _:RelocateOpcode(OP_PUSH_C));
 
 	#pragma warning pop
 
 	// nop current opcodes so we can generate our own
 	CodeScanNOPMatch(match);
-	
-	WriteAmxMemory(cip, _:const_pri_op);
-	WriteAmxMemory(cip + 4, value);
-	WriteAmxMemory(cip + 8, _:addr_alt_op);
-	WriteAmxMemory(cip + 12, destination);
-	WriteAmxMemory(cip + 16, _:fill_op);
-	WriteAmxMemory(cip + 20, (size * (cellbits / charbits)));
+
+	new ctx[AsmContext];
+	AsmInitPtr(ctx, cip, 24);
+
+	@emit const.pri value
+
+	if(is_global)
+	{
+		@emit const.alt destination
+	}
+	else
+	{
+		@emit addr.alt destination
+	}
+
+	@emit fill (size * cellbytes)
 
 	return 1;
 }

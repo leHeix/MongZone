@@ -102,6 +102,8 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include <amx/opcode>
 #include <amx/amx_memory>
 #include <amx/amx_header>
+#include <amx/asm>
+#include <amx/asm_macros>
 
 // Custom code generation
 ////////////////////////////
@@ -155,7 +157,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "server/chat/commands.pwn"
 
 public OnGameModeInit()
-{	
+{
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");

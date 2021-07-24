@@ -10,7 +10,7 @@ hook OnScriptInit()
 	new hdr[AMX_HDR];
 	GetAmxHeaderNow(hdr);
 
-	new pubname[24];
+	new pubname[32];
 	for(new i = 0, j = GetNumPublics(hdr); i < j; ++i)
 	{
 		if(!GetPublicNameFromIndex(i, pubname))
