@@ -49,44 +49,7 @@ static stock ReplaceFillInstr(const match[CodeScanner])
 
 FillMemory(arr[], val = 0, size = sizeof(arr))
 {
-	// Calls to this function can only occur after code generation (somehow, it didn't get patched)
-	if(!Server_JITComplete())
-	{
-		new dst;
-		__emit {
-			// push fill length
-			load.s.pri size
-			const.alt (cellbits / charbits)
-			smul				// size * cellbytes
-			push.pri
-
-			// dst = COD + CIP - DAT + bytes to fill param
-			lctrl 0				// COD
-			move.alt
-			lctrl 6				// CIP
-			add
-			move.alt
-			lctrl 1				// DAT
-			sub.alt
-			add.c 0x44 			// 17 instructions since lctrl 6, multiplied by cell bytes
-			stor.s.pri dst
-
-			// WriteAMXMemory(dst, fill_len)
-			pop.pri 			// pop fill size
-			sref.s.pri dst
-
-			// FILL instruction uses the PRI and ALT registers for fill value and fill destination
-			load.s.pri val
-			load.s.alt arr
-
-			fill 1				// FILL
-		}
-	}
-	else
-	{
-		memset(arr, val, size);
-	}
-
+	#pragma unused arr, val, size
 	return 0;
 }
 

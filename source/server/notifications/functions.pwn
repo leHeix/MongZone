@@ -49,7 +49,7 @@ Notification_Show(playerid, String:text, time = 2000)
 	// Bad way to do this but PawnPlus doesn't get along with the JIT
 	new str[512];
 	str_get(fixed_string, str);
-	SplitTextDrawString(str, 127.5, size, 1, 1, true);
+	SplitTextDrawString(str, 122.5, size, 1, 1, true);
 	str_set_format(fixed_string, str);
 	PlayerTextDrawSetString_s(playerid, p_tdNotifications[playerid][td_idx]{4}, fixed_string);
 	PlayerTextDrawLetterSize(playerid, p_tdNotifications[playerid][td_idx]{4}, size, 1.000000);

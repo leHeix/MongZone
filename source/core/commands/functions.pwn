@@ -32,5 +32,5 @@ bool:Commands_GetDescription(const command[], destination[], length = sizeof(des
 
 	strcpy(destination, g_rgeCommandData[i][e_szCommandDescription], length);
 
-	return false;
+	return true;
 }

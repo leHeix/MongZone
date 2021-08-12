@@ -171,7 +171,7 @@ public OnGameModeInit()
 	#if !defined DEBUG_MODE
 		if(!__JIT)
 		{
-			print(!"[!] MongZone esta diseñado para funcionar con el compilador JIT.");
+			print("[!] MongZone esta diseñado para funcionar con el compilador JIT.");
 			SendRconCommand(!"exit");
 		}
 	#endif
