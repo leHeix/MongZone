@@ -3,9 +3,6 @@
 #endif
 #define _CHAT_FUNCTIONS_
 
-#define Color_RGBToHex(%0,%1,%2) (0xFF | ((%2) << 8) | ((%1) << 16) | ((%0) << 24))
-#define Color_Darken(%0,%1) ((%0) & Color_RGBToHex((%1), (%1), (%1)))
-
 Player_SendLocalMessage(playerid, const text[], Float:range = 15.0, color = -1)
 {
 	new Float:x, Float:y, Float:z, vw = GetPlayerVirtualWorld(playerid), int = GetPlayerInterior(playerid);
