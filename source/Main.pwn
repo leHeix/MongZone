@@ -116,6 +116,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/database/header.pwn"
 #include "core/config/header.pwn"
 #include "core/async/header.pwn"
+#include "server/sync/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "core/timers/header.pwn"
@@ -135,6 +136,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/commands/functions.pwn"
 #include "player/account/functions.pwn"
 #include "server/notifications/functions.pwn"
+#include "server/sync/functions.pwn"
 #include "server/chat/functions.pwn"
 #include "player/auth/functions.pwn"
 
@@ -142,6 +144,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 ///////////////
 #include "core/database/callbacks.pwn"
 #include "core/config/callbacks.pwn"
+#include "server/sync/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
 #include "core/timers/callbacks.pwn"
@@ -158,6 +161,10 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 
 public OnGameModeInit()
 {
+    FreezeSyncPacket(0, E_PLAYER_SYNC, true);
+    SendLastSyncData(0, 1, E_PLAYER_SYNC);
+    ClearAnimationsForPlayer(0, 1);
+
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");
 	print(!"=	   /  |/  /___  ____  ____ /__  /  ____  ____  ___ 	=");
