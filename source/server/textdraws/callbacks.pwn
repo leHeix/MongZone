@@ -758,7 +758,7 @@ hook OnPlayerConnect(playerid)
 	PlayerTextDrawSetProportional(playerid, p_tdPlayerCustomization{playerid}, 1);
 	PlayerTextDrawSetSelectable(playerid, p_tdPlayerCustomization{playerid}, 1);
 
-	for(new i = 2; i != -1; i -= 1)
+	for(new i = 2; i != -1; --i)
 	{
 		p_tdNotifications[playerid][i]{0} = CreatePlayerTextDraw(playerid, 108.000000, 290.000000, !"_");
 		PlayerTextDrawFont(playerid, p_tdNotifications[playerid][i]{0}, 1);

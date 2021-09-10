@@ -35,7 +35,7 @@ Notification_Show(playerid, String:text, time = 2000)
 
 	Iter_Add(g_rgNotifUsed[playerid], td_idx);
 
-	for(new i = 5; i != -1; i -= 1)
+	for(new i = 5; i != -1; --i)
 	{
 		new Float:x, Float:y;
 		PlayerTextDrawGetPos(playerid, p_tdNotifications[playerid][td_idx]{i}, x, y);

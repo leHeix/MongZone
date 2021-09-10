@@ -17,9 +17,8 @@ Commands_GetByName(const command[])
 	new cmd_hash = YHash(command);
 
 	for(new i; i < MZ_MAX_COMMANDS; ++i)
-		if(g_rgeCommandData[i][e_iCommandNameHash])
-			if(g_rgeCommandData[i][e_iCommandNameHash] == cmd_hash)
-				return i;
+        if(g_rgeCommandData[i][e_iCommandNameHash] == cmd_hash)
+            return i;
 
 	return -1;
 }

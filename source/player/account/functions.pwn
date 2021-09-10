@@ -5,7 +5,7 @@
 
 Account_RegisterConnection(playerid)
 {
-	return mysql_tquery_s(g_hDatabase, @f("INSERT INTO `CONNECTION_LOGS` (ACCOUNT_ID, IP_ADDRESS) VALUES (%i, '%e');", Player_AccountID(playerid), Player_GetIp(playerid)));
+	return mysql_tquery_s(g_hDatabase, @f("INSERT INTO `CONNECTION_LOGS` (ACCOUNT_ID, IP_ADDRESS) VALUES (%i, '%e');", Player_AccountID(playerid), RawIpToString(Player_GetIp(playerid))));
 }
 
 Account_Register(playerid, Func:cb<> = F@_@:0)

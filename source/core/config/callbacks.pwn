@@ -12,7 +12,7 @@ hook OnScriptInit()
 	SetMaxPlayers(MAX_PLAYERS * 4);
 	SetMaxNPCs((MAX_PLAYERS * 4) - MAX_PLAYERS);
 
-	for (new i = (sizeof(g_rgcAllowedNameChars) - 1); i != -1; i -= 1)
+	for (new i = (sizeof(g_rgcAllowedNameChars) - 1); i != -1; --i)
 	{
 		AllowNickNameCharacter(g_rgcAllowedNameChars[i], true);
 	}

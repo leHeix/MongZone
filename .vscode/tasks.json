@@ -13,13 +13,13 @@
 		{
 			"label": "Compilar servidor",
 			"args": [
-				"\"source/Main.pwn\"",
+				"${workspaceFolder}\\source\\Main.pwn",
+                "--%",
 				"\"-icompiler/include\"",
 				"\"-icompiler/include/YSI\"",
 				"\"-icompiler/include/YSI/amx\"",
 				"\"-isource\"",
 				"\"-ogamemodes/server.amx\"",
-				// "\"-a\""
 			],
 			"group": {
 				"kind": "build",

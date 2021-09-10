@@ -51,7 +51,7 @@ hook OnPlayerConnect(playerid)
 	EnablePlayerCameraTarget(playerid, true);
 
 	GetPlayerName(playerid, Player_GetName(playerid), MAX_PLAYER_NAME);
-	GetPlayerIp(playerid, Player_GetIp(playerid));
+	Player_GetIp(playerid) = GetPlayerRawIp(playerid);
 
 	Bit_Set(Player_Flags(playerid), PFLAG_AUTHENTICATING, true);
 

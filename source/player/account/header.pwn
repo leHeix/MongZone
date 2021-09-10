@@ -21,7 +21,7 @@ enum {
 enum ePlayerData {
 	e_iAccountId,
 	e_szPlayerName[MAX_PLAYER_NAME],
-	e_szPlayerIp[16],
+	e_iPlayerIp,
 	e_szPlayerLastConnection[20],
 	Float:e_fPlayerHealth,
 	Float:e_fPlayerArmour,
@@ -70,7 +70,8 @@ new
 #define Player_Flags(%0) Bit:(g_rgiPlayerFlags[(%0)])
 #define Player_AccountID(%0) (g_rgePlayerData[(%0)][e_iAccountId])
 #define Player_GetName(%0) (g_rgePlayerData[(%0)][e_szPlayerName])
-#define Player_GetIp(%0) (g_rgePlayerData[(%0)][e_szPlayerIp])
+#define Player_GetIp(%0) (g_rgePlayerData[(%0)][e_iPlayerIp])
+#define Player_GetIpString(%0) (RawIpToString(g_rgePlayerData[(%0)][e_iPlayerIp]))
 #define Player_GetLastConnection(%0) (g_rgePlayerData[(%0)][e_szPlayerLastConnection])
 #define Player_Health(%0) (g_rgePlayerData[(%0)][e_fPlayerHealth])
 #define Player_Armour(%0) (g_rgePlayerData[(%0)][e_fPlayerArmour])

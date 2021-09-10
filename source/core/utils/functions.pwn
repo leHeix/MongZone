@@ -276,3 +276,16 @@ SplitTextInLines(string[], results[][], split_max = 2, split_at = 145)
 
 	return j;
 }
+
+RawIpToString(rawip)
+{
+    static ip[16];
+    ip[3] = (rawip >> 24) & 0xFF; // hi
+    ip[2] = (rawip >> 16) & 0xFF;
+    ip[1] = (rawip >>  8) & 0xFF;
+    ip[0] = rawip & 0xFF;         // lo
+
+    format(ip, 16, "%d.%d.%d.%d", ip[3], ip[2], ip[1], ip[0]);
+
+    return ip;
+}

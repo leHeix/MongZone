@@ -20,7 +20,12 @@ PlayerTimer_Start(playerid, time, bool:repeat, Func:cb<>)
 	}
 
 	new idx = PlayerTimer_GetFreeIndex(playerid);
-	assert idx != -1;
+	if(idx == -1)
+    {
+        printf("[!] MAX_PLAYER_TIMERS hit on call:");
+        printf("[!]     PlayerTimer_Start(%d, %d, %d, %d);", playerid, time, repeat, _:cb);
+        return 0;
+    }
 	
 	Indirect_Claim(cb);
 
