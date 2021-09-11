@@ -6,7 +6,8 @@
 static get_last_player_sync(playerid, animation, &BitStream:dest)
 {
     new BitStream:last_sync = get_last_sync_of(playerid, E_PLAYER_SYNC);
-    
+    printf("last_sync: %d - &dest: %d", _:last_sync, _:dest);
+
     BS_WriteUint8(dest, 207);
 
     new sync[PR_OnFootSync];
@@ -48,6 +49,10 @@ static get_last_player_sync(playerid, animation, &BitStream:dest)
 
 FreezeSyncPacket(playerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, bool:toggle)
 {
+#if defined DEBUG_MODE
+    printf("FreezeSyncPacket(%d, %d, %d)", playerid, _:type, toggle);
+#endif
+
     if(!IsPlayerConnected(playerid))
         return 0;
 
@@ -150,7 +155,15 @@ FreezeSyncPacket(playerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, bool:toggle)
 
 SendLastSyncPacket(playerid, toplayerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, animation = 0)
 {
-    if(!IsPlayerConnected(playerid))
+#if defined DEBUG_MODE
+    printf("SendLastSyncPacket(%d, %d, %d, %d)", playerid, toplayerid, _:type, animation);
+    printf("frozen_syncs(%d): %b", playerid, g_rgePlayerSyncData[playerid][frozen_syncs]);
+    printf("frozen_syncs(%d): %b", toplayerid, g_rgePlayerSyncData[toplayerid][frozen_syncs]);
+    printf("IsPlayerPaused(%d): %d", playerid, IsPlayerPaused(playerid));
+    printf("IsPlayerPaused(%d): %d", toplayerid, IsPlayerPaused(toplayerid));
+#endif
+
+    if(!IsPlayerConnected(playerid) || !IsPlayerConnected(toplayerid))
         return 0;
 
     new BitStream:bs = BS_New();
@@ -158,9 +171,10 @@ SendLastSyncPacket(playerid, toplayerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, anim
     switch(type)
     {
         case E_PLAYER_SYNC: get_last_player_sync(playerid, animation, bs);
+        default: return 0;
     }
 
-    PR_SendPacket(bs, toplayerid, PR_HIGH_PRIORITY, PR_RELIABLE_SEQUENCED);
+    PR_SendPacket(bs, toplayerid, PR_HIGH_PRIORITY, PR_UNRELIABLE_SEQUENCED);
 
     BS_Delete(bs);
 
@@ -169,6 +183,10 @@ SendLastSyncPacket(playerid, toplayerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, anim
 
 ClearAnimationsForPlayer(playerid, forplayerid)
 {
+#if defined DEBUG_MODE
+    printf("ClearAnimationsForPlayer(%d, %d)", playerid, forplayerid);
+#endif
+
     if(!IsPlayerConnected(playerid) || !IsPlayerConnected(forplayerid))
         return 0;
 
@@ -182,18 +200,30 @@ ClearAnimationsForPlayer(playerid, forplayerid)
 
 SetFakeHealth(playerid, health)
 {
+#if defined DEBUG_MODE
+    printf("SetFakeHealth(%d, %d)", playerid, health);
+#endif
+
     get_player_fake_health(playerid) = health;
     return 1;
 }
 
 SetFakeArmour(playerid, armor)
 {
+#if defined DEBUG_MODE
+    printf("SetFakeArmour(%d, %d)", playerid, armor);
+#endif
+
     get_player_fake_armor(playerid) =  armor;
     return 1;
 }
 
 SetFakeFacingAngle(playerid, Float:angle = Float:0x7FFFFFFF)
 {
+#if defined DEBUG_MODE
+    printf("SetFakeFacingAngle(%d, %f)", playerid, angle);
+#endif
+
     if(!IsPlayerConnected(playerid))
         return 0;
 
@@ -229,12 +259,20 @@ SetFakeFacingAngle(playerid, Float:angle = Float:0x7FFFFFFF)
 
 SetKnifeSync(bool:set)
 {
+#if defined DEBUG_MODE
+    printf("SetKnifeSync(%d)", set);
+#endif
+
     g_bKnifeSync = set;
     return 1;
 }
 
 SpawnPlayerForWorld(playerid)
 {
+#if defined DEBUG_MODE
+    printf("SpawnPlayerForWorld(%d)", playerid);
+#endif
+
     if(!IsPlayerConnected(playerid))
         return 0;
 

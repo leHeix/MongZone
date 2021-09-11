@@ -169,9 +169,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 
 public OnGameModeInit()
 {
-    FreezeSyncPacket(0, E_PLAYER_SYNC, true);
-    SendLastSyncPacket(0, 1, E_PLAYER_SYNC);
-    ClearAnimationsForPlayer(0, 1);
+    SetWeaponDamage(0, DAMAGE_TYPE_STATIC , 20.0);
 
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");
 	print(!"=	    __  ___                 _____                  	=");

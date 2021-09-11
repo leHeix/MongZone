@@ -27,7 +27,7 @@ hook OnPlayerDisconnect(playerid, reason)
     return 1;
 }
 
-PR_Handler<PR_INCOMING_PACKET,player_ssync_ip>:207(playerid, BitStream:bs)
+IPacket:207(playerid, BitStream:bs)
 {
     BS_IgnoreBits(bs, 8);
 
