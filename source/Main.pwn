@@ -60,10 +60,10 @@ L1:
 #include <a_samp>
 
 #undef MAX_PLAYERS
-#define MAX_PLAYERS 150
+#define MAX_PLAYERS 600
 
 // NPC things
-#assert (MAX_PLAYERS * 4) < 1000
+#assert (MAX_PLAYERS) < 1000
 
 #include <jit>
 #include <YSF>
@@ -83,6 +83,8 @@ L1:
 /////////////
 #include "core/patches/textdraws.pwn"
 #include "core/patches/first_hooks.pwn"
+
+#include <weapon-config>
 
 #include <YSI_Coding\y_hooks>
 #include <YSI_Coding\y_inline>
@@ -109,6 +111,15 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 ////////////////////////////
 #include "cgen/fill.pwn"
 
+// Sync
+//////////
+#include "server/sync/header.pwn"
+#include "server/sync/functions.pwn"
+#include "server/sync/callbacks.pwn"
+
+#undef MAX_PLAYERS
+#define MAX_PLAYERS (150)
+
 // Headers
 /////////////
 #include "core/utils/colors.pwn"
@@ -116,7 +127,6 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/database/header.pwn"
 #include "core/config/header.pwn"
 #include "core/async/header.pwn"
-#include "server/sync/header.pwn"
 #include "server/textdraws/header.pwn"
 #include "core/transitions/header.pwn"
 #include "core/timers/header.pwn"
@@ -136,7 +146,6 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 #include "core/commands/functions.pwn"
 #include "player/account/functions.pwn"
 #include "server/notifications/functions.pwn"
-#include "server/sync/functions.pwn"
 #include "server/chat/functions.pwn"
 #include "player/auth/functions.pwn"
 
@@ -144,7 +153,6 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 ///////////////
 #include "core/database/callbacks.pwn"
 #include "core/config/callbacks.pwn"
-#include "server/sync/callbacks.pwn"
 #include "server/textdraws/callbacks.pwn"
 #include "core/transitions/callbacks.pwn"
 #include "core/timers/callbacks.pwn"
@@ -162,7 +170,7 @@ DEFINE_HOOK_REPLACEMENT__(OnPlayer, OP);
 public OnGameModeInit()
 {
     FreezeSyncPacket(0, E_PLAYER_SYNC, true);
-    SendLastSyncData(0, 1, E_PLAYER_SYNC);
+    SendLastSyncPacket(0, 1, E_PLAYER_SYNC);
     ClearAnimationsForPlayer(0, 1);
 
 	print(!"= - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =");

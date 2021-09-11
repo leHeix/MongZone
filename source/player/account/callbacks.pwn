@@ -28,7 +28,6 @@ public OnPlayerDataFetched(playerid)
 		cache_get_value_name_int(0, !"VIRTUALWORLD", Player_VirtualWorld(playerid));
 		cache_get_value_name_int(0, !"INTERIOR", Player_Interior(playerid));
 		cache_get_value_name(0, !"LAST_CONNECTION", Player_GetLastConnection(playerid));
-		cache_get_value_name_int(0, !"LEVEL", Player_Level(playerid));
 		cache_get_value_name_int(0, !"XP", Player_XP(playerid));
 		cache_get_value_name_int(0, !"SKIN", Player_Skin(playerid));
 		cache_get_value_name_float(0, !"HUNGER", Player_Hunger(playerid));

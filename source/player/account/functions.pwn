@@ -67,7 +67,6 @@ Account_Save(playerid)
 			UPDATE `USERS` SET \
 				`PLAYED_TIME` = (`PLAYED_TIME` + (UNIX_TIMESTAMP() - `CURRENT_CONNECTION`)) - %i, \
 				`LAST_CONNECTION` = CURRENT_TIMESTAMP(), \
-				`LEVEL` = %i, \
 				`XP` = %i, \
 				`POS_X` = %.2f, \
 				`POS_Y` = %.2f, \
@@ -82,7 +81,7 @@ Account_Save(playerid)
 			WHERE `ID` = %i;\
 		",
 		g_rgePlayerData[playerid][e_iPlayerPausedTime],
-		Player_Level(playerid), Player_XP(playerid),
+		Player_XP(playerid),
 		g_rgePlayerData[playerid][e_fSpawnPosX], g_rgePlayerData[playerid][e_fSpawnPosY], g_rgePlayerData[playerid][e_fSpawnPosZ], g_rgePlayerData[playerid][e_fSpawnPosAngle], Player_VirtualWorld(playerid), Player_Interior(playerid),
 		Player_Hunger(playerid), Player_Thirst(playerid),
 		Player_Skin(playerid),

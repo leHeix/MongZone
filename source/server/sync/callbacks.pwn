@@ -5,6 +5,14 @@
 
 #include <YSI_Coding\y_hooks>
 
+hook OnPlayerConnect(playerid)
+{
+    g_rgePlayerSyncData[playerid][fake_health] =
+    g_rgePlayerSyncData[playerid][fake_armor] = 
+    _:(g_rgePlayerSyncData[playerid][fake_facing_angle][0] = Float:0x7FFFFFFF);
+    return 1;
+}
+
 hook OnPlayerDisconnect(playerid, reason)
 {
     g_rgePlayerSyncData[playerid][frozen_syncs] =
@@ -41,6 +49,10 @@ PR_Handler<PR_INCOMING_PACKET,player_ssync_ip>:207(playerid, BitStream:bs)
             BS_Reset(get_last_sync_of(playerid, E_PLAYER_SYNC));
 
         BS_ReadOnFootSync(bs, sync);
+
+        if(!g_bKnifeSync && sync[PR_weaponId] == 4)
+            sync[PR_keys] &= ~128;
+
         BS_WriteOnFootSync(get_last_sync_of(playerid, E_PLAYER_SYNC), sync);
     }
 

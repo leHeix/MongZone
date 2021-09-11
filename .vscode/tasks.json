@@ -14,7 +14,7 @@
 			"label": "Compilar servidor",
 			"args": [
 				"${workspaceFolder}\\source\\Main.pwn",
-                "--%",
+				"--%",
 				"\"-icompiler/include\"",
 				"\"-icompiler/include/YSI\"",
 				"\"-icompiler/include/YSI/amx\"",

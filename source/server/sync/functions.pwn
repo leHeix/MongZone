@@ -12,6 +12,24 @@ static get_last_player_sync(playerid, animation, &BitStream:dest)
     new sync[PR_OnFootSync];
     BS_ReadOnFootSync(last_sync, sync);
 
+    if(get_player_fake_health(playerid) != 0x7FFFFFFF)
+    {
+        sync[PR_health] = get_player_fake_health(playerid);
+    }
+
+    if(get_player_fake_armor(playerid) != 0x7FFFFFFF)
+    {
+        sync[PR_armour] = get_player_fake_armor(playerid);
+    }
+
+    if(g_rgePlayerSyncData[playerid][fake_facing_angle][0] != Float:0x7FFFFFFF)
+    {
+        sync[PR_quaternion][0] = g_rgePlayerSyncData[playerid][fake_facing_angle][0];
+        sync[PR_quaternion][1] = g_rgePlayerSyncData[playerid][fake_facing_angle][1];
+        sync[PR_quaternion][2] = g_rgePlayerSyncData[playerid][fake_facing_angle][2];
+        sync[PR_quaternion][3] = g_rgePlayerSyncData[playerid][fake_facing_angle][3];
+    }
+
     if(IsPlayerPaused(playerid))
     {
         sync[PR_velocity][0] = 
@@ -30,6 +48,9 @@ static get_last_player_sync(playerid, animation, &BitStream:dest)
 
 FreezeSyncPacket(playerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, bool:toggle)
 {
+    if(!IsPlayerConnected(playerid))
+        return 0;
+
     if(type == E_LAST_SYNC)
     {
         type = get_last_sync_type(playerid);
@@ -117,15 +138,21 @@ FreezeSyncPacket(playerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, bool:toggle)
     else
     {
         g_rgePlayerSyncData[playerid][frozen_syncs] &= ~(1 << _:type);
-        BS_Delete(g_rgePlayerSyncData[playerid][last_sync_bs][type]);
-        g_rgePlayerSyncData[playerid][last_sync_bs][type] = BitStream:0;
+        if(g_rgePlayerSyncData[playerid][last_sync_bs][type] != BitStream:0)
+        {
+            BS_Delete(g_rgePlayerSyncData[playerid][last_sync_bs][type]);
+            g_rgePlayerSyncData[playerid][last_sync_bs][type] = BitStream:0;
+        }
     }
 
     return 1;
 }
 
-SendLastSyncData(playerid, toplayerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, animation = 0)
+SendLastSyncPacket(playerid, toplayerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, animation = 0)
 {
+    if(!IsPlayerConnected(playerid))
+        return 0;
+
     new BitStream:bs = BS_New();
 
     switch(type)
@@ -152,3 +179,101 @@ ClearAnimationsForPlayer(playerid, forplayerid)
 
     return 1;
 }
+
+SetFakeHealth(playerid, health)
+{
+    get_player_fake_health(playerid) = health;
+    return 1;
+}
+
+SetFakeArmour(playerid, armor)
+{
+    get_player_fake_armor(playerid) =  armor;
+    return 1;
+}
+
+SetFakeFacingAngle(playerid, Float:angle = Float:0x7FFFFFFF)
+{
+    if(!IsPlayerConnected(playerid))
+        return 0;
+
+    if(angle == Float:0x7FFFFFFF)
+    {
+        g_rgePlayerSyncData[playerid][fake_facing_angle][0] =
+        g_rgePlayerSyncData[playerid][fake_facing_angle][1] =
+        g_rgePlayerSyncData[playerid][fake_facing_angle][2] =
+        g_rgePlayerSyncData[playerid][fake_facing_angle][3] = Float:0x7FFFFFFF;
+        return 1;
+    }
+
+    new Float:vec[3] = { 0.0, 0.0 };
+    vec[2] = ((360.0 - angle) * 0.17453292519943295769236907684886); // z in radians
+
+    new Float:vec_cos[3];
+    vec_cos[0] =
+    vec_cos[1] = floatcos(vec[1]);
+    vec_cos[2] = floatcos(vec[2] * 0.5);
+
+    new Float:vec_sin[3];
+    vec_sin[0] = 
+    vec_sin[1] = floatsin(vec[1]);
+    vec_sin[2] = floatsin(vec[2] * 0.5);
+
+    g_rgePlayerSyncData[playerid][fake_facing_angle][0] = vec_cos[0] * vec_cos[1] * vec_cos[2] + vec_sin[0] * vec_sin[1] * vec_sin[2]; // w
+    g_rgePlayerSyncData[playerid][fake_facing_angle][1] = vec_sin[0] * vec_cos[1] * vec_cos[2] - vec_cos[0] * vec_sin[1] * vec_sin[2]; // x
+    g_rgePlayerSyncData[playerid][fake_facing_angle][2] = vec_cos[0] * vec_sin[1] * vec_cos[2] + vec_sin[0] * vec_cos[1] * vec_sin[2]; // y
+    g_rgePlayerSyncData[playerid][fake_facing_angle][3] = vec_cos[0] * vec_cos[1] * vec_sin[2] - vec_sin[0] * vec_sin[1] * vec_cos[2]; // z
+
+    return 1;
+}
+
+SetKnifeSync(bool:set)
+{
+    g_bKnifeSync = set;
+    return 1;
+}
+
+SpawnPlayerForWorld(playerid)
+{
+    if(!IsPlayerConnected(playerid))
+        return 0;
+
+    new BitStream:bs = BS_New();
+    
+    BS_WriteValue(bs,
+        PR_UINT16,  playerid,
+        PR_UINT8,   g_rgePlayerSpawnInfo[spawn_team],
+        PR_UINT32,  g_rgePlayerSpawnInfo[spawn_skin],
+        PR_FLOAT,   g_rgePlayerSpawnInfo[spawn_x],
+        PR_FLOAT,   g_rgePlayerSpawnInfo[spawn_y],
+        PR_FLOAT,   g_rgePlayerSpawnInfo[spawn_z],
+        PR_FLOAT,   g_rgePlayerSpawnInfo[spawn_rot],
+        PR_UINT32,  GetPlayerColor(playerid),
+        PR_UINT8,   GetPlayerFightingStyle(playerid)
+    );
+
+    PR_SendRPC(bs, playerid, 32);
+
+    BS_Delete(bs);
+    
+    return 1;
+}
+
+stock MZ_SetSpawnInfo(playerid, team, skin, Float:x, Float:y, Float:z, Float:rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo)
+{
+    g_rgePlayerSpawnInfo[playerid][spawn_team] = team;
+    g_rgePlayerSpawnInfo[playerid][spawn_skin] = skin;
+    g_rgePlayerSpawnInfo[playerid][spawn_x] = x;
+    g_rgePlayerSpawnInfo[playerid][spawn_y] = y;
+    g_rgePlayerSpawnInfo[playerid][spawn_z] = z;
+    g_rgePlayerSpawnInfo[playerid][spawn_rot] = rotation;
+
+    return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
+}
+
+#if defined _ALS_SetSpawnInfo
+	#undef SetSpawnInfo
+#else
+	#define _ALS_SetSpawnInfo
+#endif
+#define SetSpawnInfo MZ_SetSpawnInfo
