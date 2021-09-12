@@ -47,6 +47,188 @@ static get_last_player_sync(playerid, animation, &BitStream:dest)
     BS_WriteOnFootSync(dest, sync, true);
 }
 
+static get_last_aim_sync(playerid, &BitStream:dest)
+{
+#if defined DEBUG_MODE
+    printf("get_last_aim_sync(%d, %d)", playerid, _:dest);
+#endif
+
+    new BitStream:last_sync = get_last_sync_of(playerid, E_AIM_SYNC);
+    printf("last_sync: %d - &dest: %d", _:last_sync, _:dest);
+    
+    BS_WriteUint8(dest, 203);
+    
+    new sync[PR_AimSync];
+    BS_ReadAimSync(last_sync, sync);
+
+    if((34 <= g_rgePlayerSyncData[playerid][last_weapon] <= 36) || g_rgePlayerSyncData[playerid][last_weapon] == 43)
+    {
+        if(sync[PR_camFrontVec][2] > 1.0)
+        {
+            sync[PR_aimZ] = 1.0;
+        }
+        else if(sync[PR_camFrontVec][2] < -1.0)
+        {
+            sync[PR_aimZ] = -1.0;
+        }
+    }
+
+    if(g_rgePlayerSyncData[playerid][infinite_ammo])
+    {
+        sync[PR_camZoom] = 0b10;
+    }
+
+    BS_WriteAimSync(dest, sync);
+}
+
+static get_last_vehicle_sync(playerid, &BitStream:dest)
+{
+#if defined DEBUG_MODE
+    printf("get_last_vehicle_sync(%d, %d)", playerid, _:dest);
+#endif
+
+    new BitStream:last_sync = get_last_sync_of(playerid, E_VEHICLE_SYNC);
+    printf("last_sync: %d - &dest: %d", _:last_sync, _:dest);
+    
+    BS_WriteUint8(dest, 200);
+    
+    new sync[PR_InCarSync];
+    BS_ReadInCarSync(last_sync, sync);
+
+    if(g_rgePlayerSyncData[playerid][fake_facing_angle][0] != Float:0x7FFFFFFF)
+    {
+        sync[PR_quaternion][0] = g_rgePlayerSyncData[playerid][fake_facing_angle][0];
+        sync[PR_quaternion][1] = g_rgePlayerSyncData[playerid][fake_facing_angle][1];
+        sync[PR_quaternion][2] = g_rgePlayerSyncData[playerid][fake_facing_angle][2];
+        sync[PR_quaternion][3] = g_rgePlayerSyncData[playerid][fake_facing_angle][3];
+    }
+
+    if(get_player_fake_health(playerid) != 0x7FFFFFFF)
+    {
+        sync[PR_playerHealth] = get_player_fake_health(playerid);
+    }
+
+    if(get_player_fake_armor(playerid) != 0x7FFFFFFF)
+    {
+        sync[PR_armour] = get_player_fake_armor(playerid);
+    }
+
+    BS_WriteInCarSync(dest, sync, true);
+}
+
+static get_last_passenger_sync(playerid, &BitStream:dest)
+{
+#if defined DEBUG_MODE
+    printf("get_last_passenger_sync(%d, %d)", playerid, _:dest);
+#endif
+
+    new BitStream:last_sync = get_last_sync_of(playerid, E_PASSENGER_SYNC);
+    printf("last_sync: %d - &dest: %d", _:last_sync, _:dest);
+
+    new sync[PR_PassengerSync];
+    BS_ReadPassengerSync(last_sync, sync);
+
+    if(get_player_fake_health(playerid) != 0x7FFFFFFF)
+    {
+        sync[PR_playerHealth] = get_player_fake_health(playerid);
+    }
+
+    if(get_player_fake_armor(playerid) != 0x7FFFFFFF)
+    {
+        sync[PR_playerArmour] = get_player_fake_armor(playerid);
+    }
+
+    new health_armour;
+    BS_PackHealthArmour(sync[PR_playerHealth], sync[PR_playerArmour], health_armour);
+
+    BS_WriteValue(dest,
+        PR_UINT8, 211, // packet id
+        PR_UINT16, playerid,
+        PR_UINT16, sync[PR_vehicleId],
+        PR_BITS, sync[PR_driveBy], 2,
+        PR_BITS, sync[PR_seatId], 6,
+        PR_BITS, sync[PR_additionalKey], 2,
+        PR_BITS, sync[PR_weaponId], 6,
+        PR_UINT8, health_armour
+    );
+
+    if(sync[PR_udKey])
+    {
+        BS_WriteValue(dest,
+            PR_BOOL, true,
+            PR_UINT16, sync[PR_udKey]
+        );
+    }
+    else
+    {
+        BS_WriteBool(dest, false);
+    }
+
+    if(sync[PR_lrKey])
+    {
+        BS_WriteValue(dest,
+            PR_BOOL, true,
+            PR_UINT16, sync[PR_lrKey]
+        );
+    }
+    else
+    {
+        BS_WriteBool(dest, false);
+    }
+
+    BS_WriteValue(dest,
+        PR_UINT16, sync[PR_keys],
+        PR_VECTOR, sync[PR_position]
+    );
+}
+
+static get_last_spectating_sync(playerid, &BitStream:dest)
+{
+#if defined DEBUG_MODE
+    printf("get_last_spectating_sync(%d, %d)", playerid, _:dest);
+#endif
+
+    new BitStream:last_sync = get_last_sync_of(playerid, E_SPECTATING_SYNC);
+    printf("last_sync: %d - &dest: %d", _:last_sync, _:dest);
+
+    new sync[PR_SpectatingSync];
+    BS_ReadSpectatingSync(last_sync, sync);
+    
+    BS_ReadValue(dest,
+        PR_UINT8, 212, // packet id
+        PR_UINT16, playerid,
+    );
+
+    if(sync[PR_lrKey])
+    {
+        BS_WriteValue(dest,
+            PR_BOOL, true,
+            PR_UINT16, sync[PR_lrKey]
+        );
+    }
+    else
+    {
+        BS_WriteBool(dest, false);
+    }
+
+    if(sync[PR_udKey])
+    {
+        BS_WriteValue(dest,
+            PR_BOOL, true,
+            PR_UINT16, sync[PR_udKey]
+        );
+    }
+    else
+    {
+        BS_WriteBool(dest, false);
+    }
+
+    BS_WriteValue(dest
+        PR_UINT16, sync[PR_keys],
+        PR_VECTOR, sync[PR_position]
+    );
+}
+
 FreezeSyncPacket(playerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, bool:toggle)
 {
 #if defined DEBUG_MODE
@@ -171,6 +353,10 @@ SendLastSyncPacket(playerid, toplayerid, E_SYNC_TYPES:type = E_PLAYER_SYNC, anim
     switch(type)
     {
         case E_PLAYER_SYNC: get_last_player_sync(playerid, animation, bs);
+        case E_AIM_SYNC: get_last_aim_sync(playerid, bs);
+        case E_VEHICLE_SYNC: get_last_vehicle_sync(playerid, bs);
+        case E_PASSENGER_SYNC: get_last_passenger_sync(playerid, bs);
+        case E_SPECTATING_SYNC: get_last_spectating_sync(playerid, bs);
         default: return 0;
     }
 
@@ -298,6 +484,15 @@ SpawnPlayerForWorld(playerid)
     BS_Delete(bs);
 #endif
 
+    return 1;
+}
+
+stock SetInfiniteAmmoSync(playerid, bool:toggle)
+{
+    if(!IsPlayerConnected(playerid))
+        return 0;
+
+    g_rgePlayerSyncData[playerid][infinite_ammo] = toggle;
     return 1;
 }
 

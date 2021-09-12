@@ -61,13 +61,14 @@ IPacket:207(playerid, BitStream:bs)
         BS_WriteOnFootSync(get_last_sync_of(playerid, E_PLAYER_SYNC), sync);
     }
 
+    g_rgePlayerSyncData[playerid][last_weapon] = sync[PR_weaponId];
     g_rgePlayerSyncData[playerid][last_sync_type] = E_PLAYER_SYNC;
     get_last_update_tick(playerid) = GetTickCount();
 
     return 1;
 }
 
-PR_Handler<PR_INCOMING_PACKET,aim_ssync_ip>:203(playerid, BitStream:bs)
+IPacket:203(playerid, BitStream:bs)
 {
     BS_IgnoreBits(bs, 8);
 
@@ -98,7 +99,7 @@ PR_Handler<PR_INCOMING_PACKET,aim_ssync_ip>:203(playerid, BitStream:bs)
     return 1;
 }
 
-PR_Handler<PR_INCOMING_PACKET,veh_ssync_ip>:200(playerid, BitStream:bs)
+IPacket:200(playerid, BitStream:bs)
 {
     BS_IgnoreBits(bs, 8);
 
@@ -129,7 +130,7 @@ PR_Handler<PR_INCOMING_PACKET,veh_ssync_ip>:200(playerid, BitStream:bs)
     return 1;
 }
 
-PR_Handler<PR_INCOMING_PACKET,passenger_ssync_ip>:211(playerid, BitStream:bs)
+IPacket:211(playerid, BitStream:bs)
 {
     BS_IgnoreBits(bs, 8);
 
@@ -160,7 +161,7 @@ PR_Handler<PR_INCOMING_PACKET,passenger_ssync_ip>:211(playerid, BitStream:bs)
     return 1;
 }
 
-PR_Handler<PR_INCOMING_PACKET,spec_ssync_ip>:212(playerid, BitStream:bs)
+IPacket:212(playerid, BitStream:bs)
 {
     BS_IgnoreBits(bs, 8);
 

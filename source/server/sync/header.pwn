@@ -18,7 +18,9 @@ enum player_sync_data {
     BitStream:last_sync_bs[E_SYNC_TYPES],
     frozen_syncs,
     last_update_tick,
-
+    last_weapon,
+    bool:infinite_ammo,
+    
     fake_health,
     fake_armor,
     Float:fake_facing_angle[4]
