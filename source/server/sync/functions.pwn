@@ -194,9 +194,9 @@ static get_last_spectating_sync(playerid, &BitStream:dest)
     new sync[PR_SpectatingSync];
     BS_ReadSpectatingSync(last_sync, sync);
     
-    BS_ReadValue(dest,
+    BS_WriteValue(dest,
         PR_UINT8, 212, // packet id
-        PR_UINT16, playerid,
+        PR_UINT16, playerid
     );
 
     if(sync[PR_lrKey])
@@ -223,7 +223,7 @@ static get_last_spectating_sync(playerid, &BitStream:dest)
         BS_WriteBool(dest, false);
     }
 
-    BS_WriteValue(dest
+    BS_WriteValue(dest,
         PR_UINT16, sync[PR_keys],
         PR_VECTOR, sync[PR_position]
     );
