@@ -31,7 +31,7 @@ static get_last_player_sync(playerid, animation, &BitStream:dest)
         sync[PR_quaternion][3] = g_rgePlayerSyncData[playerid][fake_facing_angle][3];
     }
 
-    if(IsPlayerPaused(playerid))
+    if(is_player_paused(playerid))
     {
         sync[PR_velocity][0] = 
         sync[PR_velocity][1] = 
@@ -276,6 +276,9 @@ SpawnPlayerForWorld(playerid)
     if(!IsPlayerConnected(playerid))
         return 0;
 
+#if defined _YSF_included
+    SpawnForWorld(playerid);
+#else
     new BitStream:bs = BS_New();
     
     BS_WriteValue(bs,
@@ -293,25 +296,28 @@ SpawnPlayerForWorld(playerid)
     PR_SendRPC(bs, playerid, 32);
 
     BS_Delete(bs);
-    
+#endif
+
     return 1;
 }
 
-stock MZ_SetSpawnInfo(playerid, team, skin, Float:x, Float:y, Float:z, Float:rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo)
-{
-    g_rgePlayerSpawnInfo[playerid][spawn_team] = team;
-    g_rgePlayerSpawnInfo[playerid][spawn_skin] = skin;
-    g_rgePlayerSpawnInfo[playerid][spawn_x] = x;
-    g_rgePlayerSpawnInfo[playerid][spawn_y] = y;
-    g_rgePlayerSpawnInfo[playerid][spawn_z] = z;
-    g_rgePlayerSpawnInfo[playerid][spawn_rot] = rotation;
+#if !defined _YSF_included
+    stock MZ_SetSpawnInfo(playerid, team, skin, Float:x, Float:y, Float:z, Float:rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo)
+    {
+        g_rgePlayerSpawnInfo[playerid][spawn_team] = team;
+        g_rgePlayerSpawnInfo[playerid][spawn_skin] = skin;
+        g_rgePlayerSpawnInfo[playerid][spawn_x] = x;
+        g_rgePlayerSpawnInfo[playerid][spawn_y] = y;
+        g_rgePlayerSpawnInfo[playerid][spawn_z] = z;
+        g_rgePlayerSpawnInfo[playerid][spawn_rot] = rotation;
 
-    return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
-}
+        return SetSpawnInfo(playerid, team, skin, x, y, z, rotation, weapon1, weapon1_ammo, weapon2, weapon2_ammo, weapon3, weapon3_ammo);
+    }
 
-#if defined _ALS_SetSpawnInfo
-	#undef SetSpawnInfo
-#else
-	#define _ALS_SetSpawnInfo
+    #if defined _ALS_SetSpawnInfo
+        #undef SetSpawnInfo
+    #else
+        #define _ALS_SetSpawnInfo
+    #endif
+    #define SetSpawnInfo MZ_SetSpawnInfo
 #endif
-#define SetSpawnInfo MZ_SetSpawnInfo

@@ -16,7 +16,12 @@ hook OnPlayerConnect(playerid)
 hook OnPlayerDisconnect(playerid, reason)
 {
     g_rgePlayerSyncData[playerid][frozen_syncs] =
+    g_rgePlayerSyncData[playerid][last_update_tick] =
     _:(g_rgePlayerSyncData[playerid][last_sync_type] = E_SYNC_TYPES:0);
+
+#if !defined _YSF_included
+    g_rgePlayerSpawnInfo[playerid] = g_rgePlayerSpawnInfo[MAX_PLAYERS];
+#endif
 
     for(new i = 4; i != -1; --i)
     {
@@ -57,6 +62,7 @@ IPacket:207(playerid, BitStream:bs)
     }
 
     g_rgePlayerSyncData[playerid][last_sync_type] = E_PLAYER_SYNC;
+    get_last_update_tick(playerid) = GetTickCount();
 
     return 1;
 }
@@ -87,6 +93,7 @@ PR_Handler<PR_INCOMING_PACKET,aim_ssync_ip>:203(playerid, BitStream:bs)
     }
 
     g_rgePlayerSyncData[playerid][last_sync_type] = E_AIM_SYNC;
+    get_last_update_tick(playerid) = GetTickCount();
 
     return 1;
 }
@@ -117,6 +124,7 @@ PR_Handler<PR_INCOMING_PACKET,veh_ssync_ip>:200(playerid, BitStream:bs)
     }
 
     g_rgePlayerSyncData[playerid][last_sync_type] = E_VEHICLE_SYNC;
+    get_last_update_tick(playerid) = GetTickCount();
 
     return 1;
 }
@@ -147,6 +155,7 @@ PR_Handler<PR_INCOMING_PACKET,passenger_ssync_ip>:211(playerid, BitStream:bs)
     }
 
     g_rgePlayerSyncData[playerid][last_sync_type] = E_PASSENGER_SYNC;
+    get_last_update_tick(playerid) = GetTickCount();
 
     return 1;
 }
@@ -177,6 +186,7 @@ PR_Handler<PR_INCOMING_PACKET,spec_ssync_ip>:212(playerid, BitStream:bs)
     }
 
     g_rgePlayerSyncData[playerid][last_sync_type] = E_SPECTATING_SYNC;
+    get_last_update_tick(playerid) = GetTickCount();
 
     return 1;
 }
