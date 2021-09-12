@@ -17,7 +17,9 @@ hook OnPlayerDisconnect(playerid, reason)
 {
     g_rgePlayerSyncData[playerid][frozen_syncs] =
     g_rgePlayerSyncData[playerid][last_update_tick] =
-    _:(g_rgePlayerSyncData[playerid][last_sync_type] = E_SYNC_TYPES:0);
+    g_rgePlayerSyncData[playerid][last_weapon] =
+    _:(g_rgePlayerSyncData[playerid][infinite_ammo] =
+    bool:(g_rgePlayerSyncData[playerid][last_sync_type] = E_SYNC_TYPES:0));
 
 #if !defined _YSF_included
     g_rgePlayerSpawnInfo[playerid] = g_rgePlayerSpawnInfo[MAX_PLAYERS];
